@@ -4,185 +4,387 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Happy Birthday Maya 🎉</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gloria+Hallelujah&family=Poppins:wght@300;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gloria+Hallelujah&family=Poppins:wght@300;500&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
-    /* Reset and Base */
-    *, *::before, *::after {
+    /* Reset & Base */
+    * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
     }
     body {
-      font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0 1rem 4rem;
-      min-height: 100vh;
+      font-family: "Poppins", sans-serif;
       background: linear-gradient(120deg, #ffe4e1, #fff0f5);
-      color: #6b2c2c;
       overflow-x: hidden;
-      transition: background 0.5s ease, color 0.5s ease;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       position: relative;
+      min-height: 100vh;
+      color: #6b2c2c;
+      transition: background 0.5s ease, color 0.5s ease;
+      user-select: none;
+      --btn-bg-gradient: linear-gradient(to right, #ff4b2b, #ff416c);
+      --btn-bg-hover: #ff80ab;
     }
     body.dark {
-      background: linear-gradient(120deg, #12121f, #242440);
+      background: linear-gradient(120deg, #1e1e2f, #2a2a40);
       color: #ffe4e1;
+      --btn-bg-gradient: linear-gradient(to right, #ff4081, #ff80ab);
+      --btn-bg-hover: #ff4b6e;
     }
 
-    /* Fonts & Headings */
+    /* Background Gradient Animation */
+    @keyframes bgShiftLight {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+    @keyframes bgShiftDark {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+    body {
+      background-size: 200% 200%;
+      animation: bgShiftLight 15s ease infinite;
+    }
+    body.dark {
+      animation: bgShiftDark 20s ease infinite;
+    }
+
+    /* Lock Screen */
+    .lock-screen,
+    .slider,
+    .popup {
+      display: none;
+    }
+    .lock-screen.active,
+    .slider.active,
+    .popup.show {
+      display: flex;
+    }
+
+    .lock-screen {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 2rem;
+      color: #ff69b4;
+      background: rgba(255 255 255 / 0.95);
+      user-select: none;
+      transition: background 0.5s ease;
+    }
+    body.dark .lock-screen {
+      background: rgba(30 30 47 / 0.9);
+    }
+    .lock-screen h2 {
+      font-size: 3rem;
+      font-family: "Great Vibes", cursive;
+      margin-bottom: 1rem;
+      animation: pulse 2s infinite;
+    }
+    .lock-screen p {
+      font-family: "Gloria Hallelujah", cursive;
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    .lock-screen input {
+      font-size: 1.8rem;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      border: 3px solid #ff69b4;
+      text-align: center;
+      width: 120px;
+      margin-top: 0.5rem;
+      outline-offset: 3px;
+      transition: border-color 0.3s ease;
+      font-weight: 600;
+      background: transparent;
+      color: inherit;
+    }
+    .lock-screen input:focus {
+      border-color: var(--btn-bg-gradient);
+      background: rgba(255 255 255 / 0.3);
+      color: inherit;
+    }
+    .lock-screen button {
+      margin-top: 1.2rem;
+      background: var(--btn-bg-gradient);
+      color: white;
+      border: none;
+      padding: 1rem 3rem;
+      border-radius: 2rem;
+      font-size: 1.3rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 10px #ff69b4aa;
+      user-select: none;
+    }
+    .lock-screen button:hover,
+    .lock-screen button:focus {
+      background: var(--btn-bg-hover);
+      box-shadow: 0 0 15px #ff80abcc;
+      outline: none;
+    }
+    .error-msg {
+      color: #e63946;
+      margin-top: 0.6rem;
+      font-weight: 700;
+      font-size: 1rem;
+      display: none;
+      user-select: none;
+    }
+    body.dark .error-msg {
+      color: #f08080;
+    }
+
+    /* Header & Quote */
     h1 {
-      font-family: 'Great Vibes', cursive;
-      font-size: 3.5rem;
+      font-family: "Great Vibes", cursive;
+      font-size: 4rem;
       text-align: center;
       color: #ff4081;
-      margin: 1.2rem 0 0.4rem;
+      margin-top: 1rem;
       user-select: none;
-      text-shadow: 0 0 8px #ff80ab88;
+      text-shadow: 0 0 5px #ff5e90aa;
+      transition: color 0.4s ease;
     }
     body.dark h1 {
       color: #ff80ab;
-      text-shadow: 0 0 12px #ffb6c188;
+      text-shadow: 0 0 10px #ff80abcc;
     }
     .quote {
-      font-family: 'Gloria Hallelujah', cursive;
-      font-style: italic;
-      max-width: 600px;
-      margin: 0 auto 2.4rem;
       text-align: center;
-      font-size: 1.5rem;
+      font-style: italic;
+      margin: 1rem auto 3rem auto;
+      max-width: 700px;
       color: #cc3366;
-      text-shadow: 0 0 6px #cc336655;
+      user-select: none;
+      font-size: 1.4rem;
+      transition: color 0.4s ease;
     }
     body.dark .quote {
-      color: #ffb6c1;
-      text-shadow: 0 0 8px #ffb6c177;
+      color: #ff80abcc;
     }
 
-    /* Secret Gateway */
-    #gateway {
-      display: flex;
+    /* Slider Container */
+    .slider {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      text-align: center;
-      animation: fadeIn 1.2s ease forwards;
-    }
-    #gateway h2 {
-      font-size: 2.8rem;
-      margin-bottom: 0.2rem;
+      min-height: 75vh;
+      padding: 0 1.5rem;
+      max-width: 720px;
+      margin: 0 auto 2rem auto;
       user-select: none;
-    }
-    #gateway p, #gateway small {
-      font-size: 1.25rem;
-      margin-bottom: 0.4rem;
-      user-select: none;
-    }
-    #gateway input {
-      font-size: 2.2rem;
-      padding: 0.5rem 1.2rem;
-      border-radius: 1rem;
-      border: 2px solid #ff4081;
-      margin-top: 1rem;
-      width: 150px;
-      text-align: center;
-      outline-offset: 4px;
-      transition: border-color 0.3s ease;
-      user-select: text;
-      font-weight: 600;
-    }
-    #gateway input:focus {
-      border-color: #ff80ab;
-      box-shadow: 0 0 12px #ff80abcc;
-    }
-    #gateway button {
-      margin-top: 1.4rem;
-      background: linear-gradient(45deg, #ff416c, #ff4b2b);
-      color: white;
-      padding: 1rem 2.8rem;
-      border: none;
-      border-radius: 2rem;
-      font-size: 1.5rem;
-      cursor: pointer;
-      user-select: none;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-      box-shadow: 0 6px 15px #ff416caa;
-      transition: box-shadow 0.3s ease, background 0.4s ease;
-    }
-    #gateway button:hover,
-    #gateway button:focus-visible {
-      box-shadow: 0 8px 24px #ff4b2bdd;
-      background: linear-gradient(45deg, #ff6386, #ff7562);
-      outline: none;
+      position: relative;
     }
 
-    /* Slider */
-    #slider {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      max-width: 700px;
-      width: 100%;
-      padding-bottom: 5rem;
-      animation: fadeIn 1s ease forwards;
-      user-select: none;
-    }
-    #slider.active {
-      display: flex;
-    }
-
-    /* Slide Sections */
+    /* Slides */
     .section {
       display: none;
-      flex-direction: column;
-      align-items: center;
+      padding: 1.5rem 2rem;
+      min-height: 220px;
       justify-content: center;
-      min-height: 62vh;
-      font-family: 'Gloria Hallelujah', cursive;
-      font-size: 1.5rem;
-      padding: 2rem 3rem;
+      align-items: center;
       text-align: center;
+      font-family: "Gloria Hallelujah", cursive;
+      font-size: 1.5rem;
+      line-height: 2.4rem;
+      border-radius: 1rem;
       color: #6b2c2c;
-      border-radius: 1.2rem;
-      background: #fff0f5cc;
-      box-shadow: 0 0 30px #ff80ab33;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-      max-width: 600px;
+      background: #ffe4e1dd;
+      box-shadow: 0 4px 15px rgb(255 64 129 / 0.2);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      position: relative;
       user-select: text;
     }
     body.dark .section {
       color: #ffe4e1;
-      background: #2a2a4033;
-      box-shadow: 0 0 20px #ff80ab66;
+      background: #321a2cdd;
+      box-shadow: 0 4px 15px rgb(255 128 171 / 0.25);
     }
     .section.active {
       display: flex;
-      opacity: 1;
-      transform: translateY(0);
+      animation: fadeSlideIn 0.9s ease forwards;
+    }
+    /* Animation for slides */
+    @keyframes fadeSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    /* Navigation Buttons */
+    /* Reveal button */
+    .reveal-btn {
+      margin-top: 3rem;
+      background: var(--btn-bg-gradient);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      border-radius: 1rem;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+      box-shadow: 0 0 12px var(--btn-bg-hover);
+      font-weight: 600;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+    .reveal-btn:hover,
+    .reveal-btn:focus {
+      background: var(--btn-bg-hover);
+      box-shadow: 0 0 20px var(--btn-bg-hover);
+      outline: none;
+    }
+
+    /* Popup Modal */
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 2rem 2.5rem;
+      border-radius: 1.2rem;
+      box-shadow: 0 0 25px #ff80abdd;
+      font-family: "Gloria Hallelujah", cursive;
+      z-index: 1002;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      color: #6b2c2c;
+      user-select: text;
+    }
+    body.dark .popup {
+      background: #321a2c;
+      box-shadow: 0 0 30px #ff80abcc;
+      color: #ffe4e1;
+    }
+    .popup.show {
+      display: flex;
+      animation: fadeInScale 0.5s ease forwards;
+    }
+    @keyframes fadeInScale {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .letter-text {
+      font-size: 1.4rem;
+      line-height: 2.3rem;
+      white-space: pre-wrap;
+      max-width: 500px;
+      min-height: 6rem;
+      user-select: text;
+      transition: color 0.3s ease;
+    }
+    body.dark .letter-text {
+      color: #ffe4e1;
+    }
+
+    /* Animated Signature */
+    .signature {
+      font-family: "Great Vibes", cursive;
+      font-size: 2.4rem;
+      margin-top: 2.5rem;
+      color: #ff69b4;
+      opacity: 0;
+      animation: signatureWrite 2.5s ease-out forwards;
+      user-select: none;
+    }
+    @keyframes signatureWrite {
+      0% {
+        opacity: 0;
+        transform: translateX(-50px) scale(0.8);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    /* Popup close button */
+    .popup button {
+      margin-top: 2rem;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 1rem;
+      background: var(--btn-bg-gradient);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 0 10px var(--btn-bg-hover);
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+    .popup button:hover,
+    .popup button:focus {
+      background: var(--btn-bg-hover);
+      box-shadow: 0 0 15px var(--btn-bg-hover);
+      outline: none;
+    }
+
+    /* Next and Prev buttons */
     .next-btn {
       position: fixed;
-      bottom: 1.4rem;
+      bottom: 1.2rem;
       background: #ffb6c1;
       color: #333;
-      padding: 0.9rem 1.6rem;
+      padding: 0.9rem 1.5rem;
       border: none;
-      border-radius: 2rem;
+      border-radius: 1.2rem;
       cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
+      z-index: 100;
+      font-weight: 600;
+      box-shadow: 0 0 10px #ffb6c1aa;
       user-select: none;
       transition: background 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 6px 12px #ff80ab88;
-      z-index: 110;
-      letter-spacing: 0.8px;
-      font-size: 1.3rem;
-      filter: drop-shadow(0 1px 1px #ff80abaa);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 1.1rem;
+    }
+    .next-btn:disabled {
+      cursor: default;
+      background: #f0c2d1;
+      box-shadow: none;
+      color: #888;
+    }
+    .next-btn:hover:not(:disabled),
+    .next-btn:focus:not(:disabled) {
+      background: #ff80ab;
+      box-shadow: 0 0 15px #ff80abcc;
+      outline: none;
+      color: white;
     }
     .next-btn.left {
       left: 1rem;
@@ -190,627 +392,590 @@
     .next-btn.right {
       right: 1rem;
     }
-    .next-btn:disabled {
-      background: #ffccd8aa;
-      cursor: default;
-      box-shadow: none;
-      filter: none;
-    }
-    .next-btn:hover:not(:disabled),
-    .next-btn:focus-visible:not(:disabled) {
-      background: #ff80ab;
-      box-shadow: 0 8px 20px #ff80abcc;
-      outline: none;
-    }
 
-    /* Reveal Love Letter Button */
-    .reveal-btn {
-      margin-top: 2.6rem;
-      background: #ff80ab;
-      color: white;
-      border: none;
-      padding: 1.15rem 2.8rem;
-      border-radius: 2rem;
-      cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      user-select: none;
-      box-shadow: 0 6px 15px #ff4b2bcc;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-      letter-spacing: 1.2px;
-      font-size: 1.4rem;
-      filter: drop-shadow(0 2px 3px #ff5f8dbb);
-      text-shadow: 0 0 2px #fff4f4cc;
-    }
-    .reveal-btn:hover,
-    .reveal-btn:focus-visible {
-      background: #ff6386;
-      box-shadow: 0 10px 24px #ff5f8ddd;
-      outline: none;
-    }
-
-    /* Popup */
-    #popup {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      max-width: 90vw;
-      max-height: 80vh;
-      overflow-y: auto;
-      background: white;
-      padding: 2.8rem 3rem 3rem;
-      border-radius: 1.5rem;
-      box-shadow: 0 0 30px #ff80abcc;
-      font-family: 'Gloria Hallelujah', cursive;
-      color: #333;
-      text-align: center;
-      z-index: 1200;
-      transform: translate(-50%, -50%);
-      user-select: text;
-    }
-    body.dark #popup {
-      background: #2b2b40dd;
-      color: #ffe4e1;
-      box-shadow: 0 0 30px #ff5f8ddd;
-    }
-    #popup.show {
-      display: block;
-      animation: handwriting 0.5s ease forwards;
-    }
-    @keyframes handwriting {
-      from {
-        opacity: 0;
-        transform: translate(-50%, -50%) scale(0.9);
-      }
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-      }
-    }
-    #popup button {
-      margin-top: 1.8rem;
-      font-size: 1rem;
-      cursor: pointer;
-      border: none;
-      background: #ff80ab;
-      color: white;
-      padding: 0.6rem 1.8rem;
-      border-radius: 1rem;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      user-select: none;
-      box-shadow: 0 5px 15px #ff5f8ddd;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-    }
-    #popup button:hover,
-    #popup button:focus-visible {
-      background: #ff6386;
-      box-shadow: 0 7px 20px #ff5f8ddd;
-      outline: none;
-    }
-
-    /* Typewriter Effect */
-    #letterText {
-      white-space: pre-wrap;
-      font-size: 1.4rem;
-      min-height: 12rem;
-      letter-spacing: 0.03em;
-      line-height: 1.5em;
-      user-select: text;
-    }
-
-    /* Handwritten SVG Signature Container */
-    #signature {
-      margin-top: 3rem;
-      width: 280px;
-      height: 80px;
-      margin-left: auto;
-      margin-right: auto;
-      user-select: none;
-    }
-
-    /* Animated Handwritten Signature SVG */
-    .signature-path {
-      fill: none;
-      stroke: #ff4081;
-      stroke-width: 2;
-      stroke-linejoin: round;
-      stroke-linecap: round;
-      stroke-dasharray: 500;
-      stroke-dashoffset: 500;
-      animation: drawSignature 3s ease forwards;
-      filter: drop-shadow(0 0 5px #ff80abcc);
-    }
-    body.dark .signature-path {
-      stroke: #ff80ab;
-      filter: drop-shadow(0 0 7px #ffb6c177);
-    }
-    @keyframes drawSignature {
-      to {
-        stroke-dashoffset: 0;
-      }
-    }
-
-    /* Toggle Theme Button */
+    /* Theme toggle button */
     .toggle-theme {
       position: fixed;
       top: 1rem;
       right: 1rem;
-      background: #ff4081;
-      color: white;
+      background: var(--btn-bg-gradient);
+      color: #fff;
+      padding: 0.7rem 1.3rem;
       border: none;
-      padding: 0.75rem 1.25rem;
-      border-radius: 0.75rem;
+      border-radius: 0.6rem;
       cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      z-index: 1001;
+      box-shadow: 0 0 12px var(--btn-bg-hover);
       user-select: none;
-      box-shadow: 0 6px 15px #ff80abcc;
       transition: background 0.3s ease, box-shadow 0.3s ease;
-      z-index: 1300;
-      font-size: 1.2rem;
     }
     .toggle-theme:hover,
-    .toggle-theme:focus-visible {
-      background: #ff69a7;
-      box-shadow: 0 8px 24px #ff80abcc;
+    .toggle-theme:focus {
+      background: var(--btn-bg-hover);
+      box-shadow: 0 0 18px var(--btn-bg-hover);
       outline: none;
     }
 
-    /* Background Music Control */
-    #musicControl {
+    /* Music toggle button */
+    .music-toggle {
       position: fixed;
-      bottom: 5.4rem;
-      right: 1rem;
-      background: #ff4081;
-      color: white;
+      top: 1rem;
+      left: 1rem;
+      background: var(--btn-bg-gradient);
+      color: #fff;
+      padding: 0.7rem 1.3rem;
       border: none;
-      padding: 0.7rem 1.4rem;
-      border-radius: 1.3rem;
+      border-radius: 0.6rem;
       cursor: pointer;
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
-      user-select: none;
-      box-shadow: 0 6px 15px #ff80abcc;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-      z-index: 1300;
+      font-family: "Poppins", sans-serif;
+      font-weight: 600;
       font-size: 1.1rem;
-      letter-spacing: 0.06em;
-      filter: drop-shadow(0 2px 3px #ff5f8dbb);
+      z-index: 1001;
+      box-shadow: 0 0 12px var(--btn-bg-hover);
+      user-select: none;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
     }
-    #musicControl:hover,
-    #musicControl:focus-visible {
-      background: #ff69a7;
-      box-shadow: 0 8px 24px #ff80abcc;
+    .music-toggle:hover,
+    .music-toggle:focus {
+      background: var(--btn-bg-hover);
+      box-shadow: 0 0 18px var(--btn-bg-hover);
       outline: none;
     }
 
-    /* Voice Slide Button */
-    #voiceSlide button {
-      background: linear-gradient(45deg, #ff416c, #ff4b2b);
-      border: none;
-      border-radius: 50%;
-      width: 90px;
-      height: 90px;
-      font-size: 2.5rem;
-      color: white;
-      cursor: pointer;
-      user-select: none;
-      box-shadow: 0 5px 15px #ff4b2bbb;
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-      filter: drop-shadow(0 1px 4px #ff638bcc);
-    }
-    #voiceSlide button:hover,
-    #voiceSlide button:focus-visible {
-      background: linear-gradient(45deg, #ff6386, #ff7562);
-      box-shadow: 0 8px 22px #ff638bcc;
-      outline: none;
-    }
-    #voiceSlide p {
-      margin-top: 1rem;
-      font-size: 1.1rem;
-      user-select: none;
-      letter-spacing: 0.03em;
-    }
-
-    /* Footer */
-    footer {
-      margin-top: 3rem;
-      font-size: 1rem;
-      color: #888;
-      user-select: none;
-      text-align: center;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-    }
-    body.dark footer {
-      color: #bbb;
-    }
-
-    /* Floating Effects Canvas */
-    #floatingEffectsCanvas {
-      pointer-events: none;
+    /* Floating Emoji Effects */
+    canvas#floatingCanvas {
       position: fixed;
       top: 0;
       left: 0;
+      pointer-events: none;
       width: 100vw;
       height: 100vh;
-      z-index: 90;
-      filter: drop-shadow(0 0 8px #ff80abcc);
+      z-index: 998;
       user-select: none;
     }
 
-    /* Animations */
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
+    /* Pulsing animation */
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
     }
+
+    /* Accessibility Focus Outline */
+    button:focus,
+    input:focus {
+      outline: 3px solid #ff80abcc;
+      outline-offset: 3px;
+    }
+
+    /* Scrollbar for popup */
+    .popup::-webkit-scrollbar {
+      width: 8px;
+    }
+    .popup::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .popup::-webkit-scrollbar-thumb {
+      background: #ff80abaa;
+      border-radius: 8px;
+    }
+
   </style>
 </head>
 <body>
-  <button class="toggle-theme" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">🌓</button>
+
+  <!-- Theme Toggle -->
+  <button class="toggle-theme" aria-label="Toggle light and dark theme" title="Toggle light/dark theme">
+    🌓
+  </button>
+
+  <!-- Music Toggle -->
+  <button class="music-toggle" aria-label="Play or pause background music" title="Play/Pause music">
+    🔈
+  </button>
 
   <!-- Background Music -->
-  <audio id="bg-music" autoplay loop preload="auto" src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_f2119a6a1c.mp3"></audio>
-  <button id="musicControl" aria-label="Pause background music" title="Pause background music">Pause 🎵</button>
+  <audio id="bgMusic" loop preload="auto" src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_f2119a6a1c.mp3" crossorigin="anonymous"></audio>
 
-  <!-- Secret Gateway -->
-  <section id="gateway" role="region" aria-label="Secret gateway to birthday message">
-    <h2>🔒 Secret Gateway</h2>
-    <p>Enter the code to unlock my heart💕</p>
-    <small>💡 Hint: Three numbers that mean 'I Love You'</small>
-    <input type="password" id="passcode" maxlength="3" autocomplete="off" aria-label="Enter secret code" />
-    <button id="unlockBtn" aria-label="Unlock birthday message">Unlock My Heart 💖</button>
+  <!-- Lock Screen -->
+  <section
+    class="lock-screen active"
+    id="lockScreen"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="lockTitle"
+  >
+    <h2 id="lockTitle">🔒 Secret Gateway</h2>
+    <p>Enter the code to unlock my heart 💕</p>
+    <input
+      type="text"
+      id="codeInput"
+      maxlength="3"
+      placeholder="💗💗💗"
+      aria-label="Enter secret code"
+      autocomplete="off"
+      inputmode="numeric"
+      pattern="[0-9]*"
+    />
+    <button id="unlockBtn" aria-describedby="errorMsg">❤️ Unlock My Heart</button>
+    <p id="errorMsg" class="error-msg" role="alert" aria-live="assertive"></p>
   </section>
 
-  <!-- Main Content Slider -->
-  <main id="slider" role="main" aria-live="polite" aria-atomic="true" tabindex="-1" aria-label="Birthday message slides">
+  <!-- Slider -->
+  <main
+    class="slider"
+    id="slider"
+    role="main"
+    aria-live="polite"
+    aria-atomic="true"
+    tabindex="-1"
+  >
     <h1>Happy Birthday Maya 🎉</h1>
     <p class="quote">"You make the world brighter just by being in it."</p>
 
-    <article class="section active" role="group" aria-roledescription="slide" aria-label="Slide 1">
+    <article class="section active" aria-label="Slide 1: Birthday opening message" tabindex="0">
       🎂 On this special day, the universe pauses to celebrate you. Your existence adds meaning to mine.
     </article>
-    <article class="section" role="group" aria-roledescription="slide" aria-label="Slide 2">
+    <article class="section" aria-label="Slide 2: Inner beauty celebration" tabindex="0">
       🌌 You're not just beautiful on the outside, but breathtaking within. Today, we celebrate all that you are. 💖
     </article>
-    <article class="section" role="group" aria-roledescription="slide" aria-label="Slide 3">
+    <article class="section" aria-label="Slide 3: Colorful world" tabindex="0">
       🌠 My world began spinning in color the day you walked into it. You are my life. 🥺
     </article>
-    <article class="section" role="group" aria-roledescription="slide" aria-label="Slide 4">
+    <article class="section" aria-label="Slide 4: Laughter rhythm" tabindex="0">
       🎶 Your laughter is the rhythm I live for. I'd write your name on every heartbeat. ❤️
     </article>
-    <article class="section" role="group" aria-roledescription="slide" aria-label="Slide 5">
+    <article class="section" aria-label="Slide 5: Grace and stardust" tabindex="0">
       🦋 You are grace wrapped in stardust. I fall for you every single day. 🌷
     </article>
 
-    <!-- Voice Slide -->
-    <article id="voiceSlide" class="section" role="group" aria-roledescription="slide" aria-label="Voice message slide">
-      <h3>🎤 My Voice, My Heart 🎶</h3>
-      <p>I recorded something special, just for you💕</p>
-      <button id="playVoiceBtn" aria-label="Play voice message" title="Play voice message">▶️</button>
-      <p>🔊 Tap to hear my voice</p>
-      <p>Thank you for being the most incredible person in my life. I love you beyond time, beyond everything 💕</p>
+    <!-- Voice Message Slide -->
+    <article
+      class="section"
+      aria-label="Slide 6: Voice message"
+      tabindex="0"
+      id="voiceSlide"
+    >
+      <p style="margin-bottom: 2rem;">
+        🎤 A special voice message for you:
+      </p>
+      <button id="voicePlayBtn" aria-label="Play voice message" aria-pressed="false" aria-live="polite" style="padding:0.7rem 1.5rem; font-size:1.2rem; border-radius:1rem; border:none; background: var(--btn-bg-gradient); color:#fff; cursor:pointer; box-shadow: 0 0 10px var(--btn-bg-hover); transition: background 0.3s ease;">
+        ▶️ Play Voice Message
+      </button>
+      <audio id="voiceAudio" preload="auto" src="https://cdn.pixabay.com/download/audio/2022/10/22/audio_2f6b352b6e.mp3" crossorigin="anonymous"></audio>
     </article>
 
-    <!-- Love Letter Slide -->
-    <article class="section" role="group" aria-roledescription="slide" aria-label="Love letter slide">
-      <p>With all my heart and soul, forever yours,<br><strong>sparsh</strong> 💌</p>
-      <button class="reveal-btn" id="revealLetterBtn" aria-label="Reveal love letter" title="Reveal love letter">💌 Reveal Love Letter 💌</button>
+    <article class="section" aria-label="Slide 7: Closing message and reveal letter" tabindex="0">
+      With all my heart and soul, forever yours,<br /><strong>sparsh</strong> 💌
+      <div style="margin-top: 2.5rem;">
+        <button class="reveal-btn" id="revealLetterBtn" aria-haspopup="dialog" aria-controls="popup">
+          💌 Reveal Love Letter 💌
+        </button>
+      </div>
     </article>
+
+    <button
+      class="next-btn left"
+      id="prevBtn"
+      aria-label="Previous slide"
+      title="Previous"
+      disabled
+    >
+      ⬅️ Prev
+    </button>
+    <button
+      class="next-btn right"
+      id="nextBtn"
+      aria-label="Next slide"
+      title="Next"
+    >
+      Next ➡️
+    </button>
+
+    <footer class="footer" aria-label="Footer">
+      © 2025 Made with ❤️ by Sparsh
+    </footer>
   </main>
 
   <!-- Love Letter Popup -->
-  <aside id="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="letterText" tabindex="-1">
-    <h2 id="popupTitle" style="margin-bottom:1rem; user-select:none;">💖 A Letter for Maya 💖</h2>
-    <div id="letterText" aria-live="polite" aria-atomic="true"></div>
-    <div id="signature" aria-hidden="true" title="Handwritten signature">
-      <svg viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="img" >
-        <path class="signature-path" d="M10 65
-          c10 -20 20 -20 40 -20
-          s30 10 40 15
-          c12 7 15 10 25 10
-          s18 -7 25 -10
-          c10 -5 35 -18 50 -20
-          s25 10 25 15" />
-      </svg>
-    </div>
-    <button id="closePopupBtn" aria-label="Close love letter">Close</button>
-  </aside>
+  <section
+    class="popup"
+    id="popup"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="popupTitle"
+    aria-describedby="typedText"
+    tabindex="-1"
+  >
+    <div class="letter-text" id="typedText" aria-live="polite"></div>
+    <span id="signature" class="signature" style="display: none;">— sparsh 💌</span>
+    <button id="closePopupBtn" aria-label="Close love letter popup">Close</button>
+  </section>
 
-  <!-- Floating Effects Canvas -->
-  <canvas id="floatingEffectsCanvas" aria-hidden="true"></canvas>
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
 
-  <!-- Audio for voice message -->
-  <audio id="voiceMsg" preload="auto" src="your-voice.mp3"></audio>
+  <!-- Floating emojis canvas -->
+  <canvas id="floatingCanvas"></canvas>
 
-  <!-- Navigation Buttons -->
-  <button class="next-btn left" id="prevBtn" aria-label="Previous slide" title="Previous slide" disabled>⬅️ Prev</button>
-  <button class="next-btn right" id="nextBtn" aria-label="Next slide" title="Next slide">Next ➡️</button>
-
-  <!-- Footer -->
-  <footer>© 2025 Made with ❤️ by Sparsh</footer>
-
+  <!-- External library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
   <script>
-    (() => {
-      const body = document.body;
+    // --- Variables ---
+    const lockScreen = document.getElementById("lockScreen");
+    const codeInput = document.getElementById("codeInput");
+    const unlockBtn = document.getElementById("unlockBtn");
+    const errorMsg = document.getElementById("errorMsg");
+    const slider = document.getElementById("slider");
+    const sections = slider.querySelectorAll(".section");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const popup = document.getElementById("popup");
+    const typedText = document.getElementById("typedText");
+    const signature = document.getElementById("signature");
+    const closePopupBtn = document.getElementById("closePopupBtn");
+    const revealLetterBtn = document.getElementById("revealLetterBtn");
+    const toggleThemeBtn = document.querySelector(".toggle-theme");
+    const musicToggleBtn = document.querySelector(".music-toggle");
+    const bgMusic = document.getElementById("bgMusic");
+    const voiceAudio = document.getElementById("voiceAudio");
+    const voicePlayBtn = document.getElementById("voicePlayBtn");
+    const floatingCanvas = document.getElementById("floatingCanvas");
+    const confettiCanvas = document.getElementById("confettiCanvas");
 
-      // Elements
-      const gateway = document.getElementById('gateway');
-      const slider = document.getElementById('slider');
-      const sections = slider.querySelectorAll('.section');
-      const passcodeInput = document.getElementById('passcode');
-      const unlockBtn = document.getElementById('unlockBtn');
-      const toggleThemeBtn = document.querySelector('.toggle-theme');
-      const musicControlBtn = document.getElementById('musicControl');
-      const bgMusic = document.getElementById('bg-music');
-      const voiceMsg = document.getElementById('voiceMsg');
-      const playVoiceBtn = document.getElementById('playVoiceBtn');
-      const revealLetterBtn = document.getElementById('revealLetterBtn');
-      const popup = document.getElementById('popup');
-      const letterText = document.getElementById('letterText');
-      const signature = document.getElementById('signature');
-      const closePopupBtn = document.getElementById('closePopupBtn');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
+    // Current slide index
+    let currentSlide = 0;
 
-      // Slide index and control
-      let currentSlide = 0;
-
-      function updateSlideButtons() {
-        prevBtn.disabled = currentSlide === 0;
-        nextBtn.disabled = currentSlide === sections.length - 1;
+    // --- Theme Persistence ---
+    function loadTheme() {
+      const savedTheme = localStorage.getItem("birthdayTheme");
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark");
+      } else {
+        document.body.classList.remove("dark");
       }
+      updateToggleThemeBtn();
+    }
+    function saveTheme(theme) {
+      localStorage.setItem("birthdayTheme", theme);
+    }
+    function updateToggleThemeBtn() {
+      if (document.body.classList.contains("dark")) {
+        toggleThemeBtn.textContent = "☀️";
+        toggleThemeBtn.title = "Switch to Light Mode";
+      } else {
+        toggleThemeBtn.textContent = "🌓";
+        toggleThemeBtn.title = "Switch to Dark Mode";
+      }
+    }
+    toggleThemeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("dark");
+      const theme = document.body.classList.contains("dark") ? "dark" : "light";
+      saveTheme(theme);
+      updateToggleThemeBtn();
+    });
 
-      function showSlide(index) {
-        if(index < 0 || index >= sections.length) return;
-        sections.forEach((section, i) => {
-          section.classList.toggle('active', i === index);
-        });
-        currentSlide = index;
-        updateSlideButtons();
+    // --- Background Music Controls ---
+    let bgMusicPlaying = false;
+    // On page load, try to play music muted (for browsers that allow it)
+    bgMusic.volume = 0.15; // Gentle volume
+    bgMusic.play().then(() => {
+      bgMusicPlaying = true;
+      musicToggleBtn.textContent = "🔈"; // Speaker icon
+      musicToggleBtn.title = "Pause Music";
+    }).catch(() => {
+      // Autoplay blocked; set icon to play
+      bgMusicPlaying = false;
+      musicToggleBtn.textContent = "🔇";
+      musicToggleBtn.title = "Play Music";
+    });
+
+    musicToggleBtn.addEventListener("click", () => {
+      if (bgMusicPlaying) {
+        bgMusic.pause();
+        musicToggleBtn.textContent = "🔇";
+        musicToggleBtn.title = "Play Music";
+        bgMusicPlaying = false;
+      } else {
+        bgMusic.play();
+        musicToggleBtn.textContent = "🔈";
+        musicToggleBtn.title = "Pause Music";
+        bgMusicPlaying = true;
+      }
+    });
+
+    // --- Lock Screen Code Validation ---
+    unlockBtn.addEventListener("click", checkCode);
+    codeInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        checkCode();
+      }
+    });
+    function checkCode() {
+      const code = codeInput.value.trim();
+      if (code === "143") {
+        errorMsg.style.display = "none";
+        lockScreen.classList.remove("active");
+        slider.classList.add("active");
+        currentSlide = 0;
+        showSlide(currentSlide);
         slider.focus();
+        startFloatingEmojis();
+        bgMusic.play();
+      } else {
+        errorMsg.textContent = "❌ Wrong code, try again!";
+        errorMsg.style.display = "block";
+        codeInput.focus();
       }
+    }
 
-      // Secret Gateway
-      unlockBtn.addEventListener('click', () => {
-        const code = passcodeInput.value.trim();
-        if(code === '143') {
-          gateway.style.display = 'none';
-          slider.classList.add('active');
-          showSlide(0);
-          bgMusic.play().catch(() => {});
-          passcodeInput.value = '';
-        } else {
-          alert("Oops! Try again 🌸");
-          passcodeInput.value = '';
-          passcodeInput.focus();
-        }
+    // --- Slide Navigation ---
+    function showSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= sections.length) index = sections.length - 1;
+      sections.forEach((sec, i) => {
+        sec.classList.toggle("active", i === index);
+        sec.setAttribute("aria-hidden", i !== index);
       });
+      currentSlide = index;
+      prevBtn.disabled = index === 0;
+      nextBtn.disabled = index === sections.length - 1;
 
-      passcodeInput.addEventListener('keydown', e => {
-        if(e.key === 'Enter') unlockBtn.click();
-      });
+      // Focus slide content for screen reader
+      sections[index].focus();
+    }
+    prevBtn.addEventListener("click", () => {
+      showSlide(currentSlide - 1);
+    });
+    nextBtn.addEventListener("click", () => {
+      showSlide(currentSlide + 1);
+    });
 
-      // Theme toggle with localStorage persistence
-      function applyTheme(theme) {
-        if(theme === 'dark') {
-          body.classList.add('dark');
-          toggleThemeBtn.textContent = '🌞';
-          toggleThemeBtn.title = "Switch to light mode";
-          localStorage.setItem('theme', 'dark');
+    // Keyboard navigation support for slides (left/right arrows)
+    document.addEventListener("keydown", (e) => {
+      if (!slider.classList.contains("active") || popup.classList.contains("show")) return;
+      if (e.key === "ArrowRight") {
+        if (currentSlide < sections.length - 1) showSlide(currentSlide + 1);
+      }
+      if (e.key === "ArrowLeft") {
+        if (currentSlide > 0) showSlide(currentSlide - 1);
+      }
+      if (e.key === "Escape") {
+        if (popup.classList.contains("show")) hidePopup();
+      }
+    });
+
+    // --- Love Letter Popup with Typewriter and Signature Animation ---
+    function typeWriter(text, targetEl, signatureEl, callback) {
+      let i = 0;
+      targetEl.textContent = "";
+      signatureEl.style.display = "none";
+      function type() {
+        if (i < text.length) {
+          targetEl.textContent += text.charAt(i);
+          i++;
+          setTimeout(type, 40);
         } else {
-          body.classList.remove('dark');
-          toggleThemeBtn.textContent = '🌓';
-          toggleThemeBtn.title = "Switch to dark mode";
-          localStorage.setItem('theme', 'light');
+          setTimeout(() => {
+            signatureEl.style.display = "inline-block";
+            if (callback) callback();
+          }, 300);
         }
       }
+      type();
+    }
 
-      toggleThemeBtn.addEventListener('click', () => {
-        applyTheme(body.classList.contains('dark') ? 'light' : 'dark');
+    revealLetterBtn.addEventListener("click", () => {
+      const letter = `Dear Maya,
+
+Your love is the light in my world. Every second with you is magic.
+I promise to love you beyond limits. 💖`;
+      popup.classList.add("show");
+      popup.focus();
+      typeWriter(letter, typedText, signature, () => {
+        firework();
       });
+    });
 
-      // On load apply saved theme
-      applyTheme(localStorage.getItem('theme') || 'light');
+    closePopupBtn.addEventListener("click", hidePopup);
+    function hidePopup() {
+      popup.classList.remove("show");
+      typedText.textContent = "";
+      signature.style.display = "none";
+      // Return focus to reveal button
+      revealLetterBtn.focus();
+    }
 
-      // Background music control
-      let bgMusicPlaying = true;
-      musicControlBtn.addEventListener('click', () => {
-        if(bgMusicPlaying) {
-          bgMusic.pause();
-          musicControlBtn.textContent = 'Play 🎵';
-          musicControlBtn.title = 'Play background music';
-          bgMusicPlaying = false;
-        } else {
-          bgMusic.play();
-          musicControlBtn.textContent = 'Pause 🎵';
-          musicControlBtn.title = 'Pause background music';
-          bgMusicPlaying = true;
+    // --- Confetti Fireworks ---
+    const confetti = window.confetti;
+    const confettiSettings = {
+      particleCount: 150,
+      spread: 90,
+      origin: { y: 0.6 },
+      ticks: 200,
+    };
+    function firework() {
+      confetti(confettiSettings);
+    }
+
+    // --- Floating Emojis Animation ---
+    // We'll draw floating hearts, sparkles, and snowflakes on a canvas
+    const ctx = floatingCanvas.getContext("2d");
+    let floatingEmojis = [];
+    const emojiTypes = [
+      { char: "💗", color: "#ff6f91", size: 26, speedRange: [20, 40] },
+      { char: "✨", color: "#ffd700", size: 20, speedRange: [30, 60] },
+      { char: "❄️", color: "#cceeff", size: 16, speedRange: [10, 25] },
+    ];
+
+    // Resize canvas
+    function resizeCanvas() {
+      floatingCanvas.width = window.innerWidth;
+      floatingCanvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    class FloatingEmoji {
+      constructor(type) {
+        this.char = type.char;
+        this.color = type.color;
+        this.size = type.size;
+        this.speed = Math.random() * (type.speedRange[1] - type.speedRange[0]) + type.speedRange[0];
+        this.x = Math.random() * floatingCanvas.width;
+        this.y = floatingCanvas.height + this.size + Math.random() * 100;
+        this.opacity = 1;
+        this.rotation = Math.random() * 2 * Math.PI;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.02;
+        this.scale = 1;
+      }
+      update(delta) {
+        this.y -= (this.speed * delta) / 1000;
+        this.rotation += this.rotationSpeed;
+        this.opacity -= 0.0008 * delta;
+        if (this.opacity < 0) this.opacity = 0;
+        // Slight pulsate scale
+        this.scale = 1 + 0.15 * Math.sin(this.rotation * 5);
+      }
+      draw(ctx) {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        ctx.font = `${this.size * this.scale}px serif`;
+        ctx.fillStyle = this.color;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(this.char, 0, 0);
+        ctx.restore();
+      }
+    }
+
+    // Create emojis continuously
+    function spawnEmoji() {
+      const type = emojiTypes[Math.floor(Math.random() * emojiTypes.length)];
+      floatingEmojis.push(new FloatingEmoji(type));
+    }
+
+    // Spawn emojis every 700ms
+    let spawnInterval;
+
+    function startFloatingEmojis() {
+      if (spawnInterval) return;
+      spawnInterval = setInterval(spawnEmoji, 700);
+      requestAnimationFrame(animateEmojis);
+    }
+
+    function animateEmojis(timestamp) {
+      ctx.clearRect(0, 0, floatingCanvas.width, floatingCanvas.height);
+      let delta = 16; // approx 60fps
+      if (animateEmojis.last) delta = timestamp - animateEmojis.last;
+      animateEmojis.last = timestamp;
+
+      floatingEmojis.forEach((emoji, i) => {
+        emoji.update(delta);
+        emoji.draw(ctx);
+        if (emoji.opacity <= 0 || emoji.y + emoji.size < 0) {
+          floatingEmojis.splice(i, 1);
         }
       });
 
-      // Voice message play/pause
-      let voicePlaying = false;
-      playVoiceBtn.addEventListener('click', () => {
-        if(!voicePlaying) {
+      requestAnimationFrame(animateEmojis);
+    }
+
+    // --- Voice Message Slide Controls ---
+    let voicePlaying = false;
+
+    voicePlayBtn.addEventListener("click", () => {
+      if (!voicePlaying) {
+        voiceAudio.play();
+        voicePlayBtn.textContent = "⏸️ Pause Voice Message";
+        voicePlayBtn.setAttribute("aria-pressed", "true");
+        voicePlaying = true;
+        // Pause background music
+        if (!bgMusic.paused) {
           bgMusic.pause();
-          voiceMsg.play();
-          playVoiceBtn.textContent = '⏸️';
-          playVoiceBtn.title = 'Pause voice message';
-          voicePlaying = true;
+          bgMusicWasPlayingBeforeVoice = true;
         } else {
-          voiceMsg.pause();
-          playVoiceBtn.textContent = '▶️';
-          playVoiceBtn.title = 'Play voice message';
-          voicePlaying = false;
-          if(bgMusicPlaying) bgMusic.play();
+          bgMusicWasPlayingBeforeVoice = false;
         }
-      });
-      voiceMsg.addEventListener('ended', () => {
+      } else {
+        voiceAudio.pause();
+        voicePlayBtn.textContent = "▶️ Play Voice Message";
+        voicePlayBtn.setAttribute("aria-pressed", "false");
         voicePlaying = false;
-        playVoiceBtn.textContent = '▶️';
-        playVoiceBtn.title = 'Play voice message';
-        if(bgMusicPlaying) bgMusic.play();
-      });
-
-      // Next/Prev slide navigation
-      nextBtn.addEventListener('click', () => {
-        if(currentSlide < sections.length -1) {
-          showSlide(currentSlide + 1);
+        // Resume background music if it was playing
+        if (bgMusicWasPlayingBeforeVoice) {
+          bgMusic.play();
         }
-      });
-      prevBtn.addEventListener('click', () => {
-        if(currentSlide > 0) {
-          showSlide(currentSlide - 1);
-        }
-      });
-
-      // Keyboard shortcuts for accessibility
-      document.addEventListener('keydown', e => {
-        if(slider.classList.contains('active')) {
-          if(e.key === 'ArrowRight') nextBtn.click();
-          else if(e.key === 'ArrowLeft') prevBtn.click();
-          else if(e.key === 'Escape' && popup.classList.contains('show')) closePopupBtn.click();
-        }
-      });
-
-      // Floating Hearts, Sparkles & Snowflakes on canvas
-      const floatingCanvas = document.getElementById('floatingEffectsCanvas');
-      const ctx = floatingCanvas.getContext('2d');
-      let particles = [];
-      const emojis = ['❤️', '💖', '✨', '❄️'];
-      const maxParticles = 100;
-
-      function random(min,max) {
-        return Math.random() * (max - min) + min;
       }
+    });
 
-      class Particle {
-        constructor(x,y,emoji){
-          this.x = x;
-          this.y = y;
-          this.emoji = emoji;
-          this.size = random(22, 36);
-          this.speedY = random(0.4, 1.4);
-          this.speedX = random(-0.4, 0.4);
-          this.opacity = 1;
-          this.life = random(120, 220);
-          this.rotation = random(0, Math.PI*2);
-          this.rotationSpeed = random(0.005, 0.015);
-        }
-        update(){
-          this.y -= this.speedY;
-          this.x += this.speedX;
-          this.rotation += this.rotationSpeed;
-          this.life--;
-          this.opacity = this.life/220;
-          if(this.life <= 0 || this.y < -50 || this.x < -50 || this.x > floatingCanvas.width + 50) {
-            this.respawn();
+    voiceAudio.addEventListener("ended", () => {
+      voicePlayBtn.textContent = "▶️ Play Voice Message";
+      voicePlayBtn.setAttribute("aria-pressed", "false");
+      voicePlaying = false;
+      if (bgMusicWasPlayingBeforeVoice) {
+        bgMusic.play();
+      }
+    });
+
+    // --- Accessibility & Focus management ---
+    // Focus first input on load
+    codeInput.focus();
+
+    // Trap focus inside popup when open
+    popup.addEventListener("keydown", (e) => {
+      if (e.key === "Tab") {
+        const focusable = popup.querySelectorAll("button, [tabindex='0']");
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
           }
         }
-        draw(ctx){
-          ctx.save();
-          ctx.globalAlpha = this.opacity;
-          ctx.translate(this.x, this.y);
-          ctx.rotate(this.rotation);
-          ctx.font = `${this.size}px serif`;
-          ctx.fillText(this.emoji, 0, 0);
-          ctx.restore();
-          ctx.globalAlpha = 1;
-        }
-        respawn(){
-          this.x = random(0, floatingCanvas.width);
-          this.y = floatingCanvas.height + random(10, 100);
-          this.size = random(22, 36);
-          this.speedY = random(0.4, 1.4);
-          this.speedX = random(-0.4, 0.4);
-          this.opacity = 1;
-          this.life = random(120, 220);
-          this.emoji = emojis[Math.floor(random(0, emojis.length))];
-          this.rotation = random(0, Math.PI*2);
-          this.rotationSpeed = random(0.005, 0.015);
-        }
       }
+    });
 
-      function initParticles(){
-        particles = [];
-        for(let i=0; i<maxParticles; i++){
-          particles.push(new Particle(random(0, floatingCanvas.width), random(0, floatingCanvas.height), emojis[Math.floor(random(0, emojis.length))]));
-        }
-      }
+    // --- Init ---
+    loadTheme();
 
-      function resizeCanvas(){
-        floatingCanvas.width = window.innerWidth;
-        floatingCanvas.height = window.innerHeight;
-        initParticles();
-      }
-      window.addEventListener('resize', resizeCanvas);
-      resizeCanvas();
-
-      function animate(){
-        ctx.clearRect(0,0,floatingCanvas.width,floatingCanvas.height);
-        particles.forEach(p => {
-          p.update();
-          p.draw(ctx);
-        });
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      // Love Letter Popup typing + handwritten signature animation
-      const letterContent = `Dear Maya,
-
-Your love is the light in my world. Every second with you is magic. I promise to love you beyond limits. 💖
-
-Love,
-Sparsh 💌`;
-
-      let typingIndex = 0;
-      let typingInterval;
-
-      function startTyping(){
-        letterText.textContent = '';
-        signature.querySelector('svg path').style.animation = 'none'; // reset
-        void signature.querySelector('svg path').offsetWidth; // trigger reflow
-        typingIndex = 0;
-        clearInterval(typingInterval);
-        typingInterval = setInterval(() => {
-          letterText.textContent += letterContent.charAt(typingIndex);
-          typingIndex++;
-          if(typingIndex >= letterContent.length){
-            clearInterval(typingInterval);
-            // Start signature animation
-            signature.querySelector('svg path').style.animation = 'drawSignature 3s ease forwards';
-          }
-        }, 60);
-      }
-
-      revealLetterBtn.addEventListener('click', () => {
-        popup.classList.add('show');
-        popup.focus();
-        startTyping();
-        // Confetti burst
-        confetti({
-          particleCount: 250,
-          spread: 120,
-          origin: { y: 0.6 },
-          colors: ['#ff416c', '#ff4b2b', '#ff80ab', '#ffb6c1']
-        });
-      });
-
-      closePopupBtn.addEventListener('click', () => {
-        popup.classList.remove('show');
-        letterText.textContent = '';
-        signature.querySelector('svg path').style.animation = 'none';
-        revealLetterBtn.focus();
-      });
-
-      // Initialize slider state
-      showSlide(0);
-    })();
   </script>
 </body>
 </html>
+

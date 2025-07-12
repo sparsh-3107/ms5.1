@@ -1,665 +1,816 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Happy Birthday Maya 🎉</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gloria+Hallelujah&family=Poppins:wght@300;500&display=swap" rel="stylesheet"/>
-<style>
-  /* Reset & base */
-  * {
-    box-sizing: border-box;
-    margin: 0; padding: 0;
-  }
-  body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(120deg, #ffe4e1, #fff0f5);
-    color: #6b2c2c;
-    overflow-x: hidden;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
-    transition: background 0.3s ease, color 0.3s ease;
-    position: relative;
-  }
-  body.dark {
-    background: linear-gradient(120deg, #1e1e2f, #2a2a40);
-    color: #ffe4e1;
-  }
-
-  /* Fonts & headings */
-  h1 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 3rem;
-    text-align: center;
-    color: #ff4081;
-    margin: 1rem 0 0.5rem;
-    user-select: none;
-  }
-  body.dark h1 {
-    color: #ff80ab;
-  }
-  .quote {
-    font-family: 'Gloria Hallelujah', cursive;
-    font-style: italic;
-    max-width: 600px;
-    margin: 0 auto 2rem;
-    text-align: center;
-    color: #cc3366;
-  }
-  body.dark .quote {
-    color: #ffb6c1;
-  }
-
-  /* Secret Gateway */
-  #gateway {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    display: flex;
-    text-align: center;
-  }
-  #gateway h2, #gateway p, #gateway small {
-    margin-bottom: 0.5rem;
-  }
-  #gateway input {
-    font-size: 2rem;
-    padding: 0.6rem 1rem;
-    border-radius: 0.8rem;
-    border: 2px solid #ff4081;
-    width: 140px;
-    text-align: center;
-    outline-offset: 2px;
-    transition: border-color 0.3s ease;
-  }
-  #gateway input:focus {
-    border-color: #ff80ab;
-  }
-  #gateway button {
-    margin-top: 1rem;
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
-    color: white;
-    padding: 0.8rem 2rem;
-    border: none;
-    border-radius: 1rem;
-    font-size: 1.3rem;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.3s ease;
-  }
-  #gateway button:hover {
-    background: linear-gradient(to right, #ff6f5b, #ff638c);
-  }
-
-  /* Slider container */
-  #slider {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    max-width: 700px;
-    width: 100%;
-    padding-bottom: 4rem;
-  }
-  #slider.active {
-    display: flex;
-  }
-
-  /* Slide sections */
-  .section {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh;
-    font-family: 'Gloria Hallelujah', cursive;
-    font-size: 1.4rem;
-    padding: 1rem 2rem;
-    text-align: center;
-    color: #6b2c2c;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-  body.dark .section {
-    color: #ffe4e1;
-  }
-  .section.active {
-    display: flex;
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Navigation buttons */
-  .next-btn {
-    position: fixed;
-    bottom: 1rem;
-    background: #ffb6c1;
-    color: #333;
-    padding: 0.8rem 1.4rem;
-    border: none;
-    border-radius: 1rem;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    user-select: none;
-    transition: background 0.3s ease;
-    z-index: 101;
-  }
-  .next-btn:disabled {
-    background: #ffdce0;
-    cursor: default;
-  }
-  .next-btn.left {
-    left: 1rem;
-  }
-  .next-btn.right {
-    right: 1rem;
-  }
-  .next-btn:hover:not(:disabled) {
-    background: #ff8fa0;
-  }
-
-  /* Reveal Love Letter Button */
-  .reveal-btn {
-    margin-top: 2rem;
-    background: #ff80ab;
-    color: white;
-    border: none;
-    padding: 1rem 2rem;
-    border-radius: 1rem;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    user-select: none;
-    transition: background 0.3s ease;
-  }
-  .reveal-btn:hover {
-    background: #ff5f8d;
-  }
-
-  /* Popup Love Letter */
-  #popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    max-width: 90vw;
-    max-height: 80vh;
-    overflow-y: auto;
-    background: white;
-    padding: 2rem 3rem;
-    border-radius: 1rem;
-    box-shadow: 0 0 20px #ff80ab;
-    font-family: 'Gloria Hallelujah', cursive;
-    color: #333;
-    text-align: center;
-    z-index: 1100;
-    transform: translate(-50%, -50%);
-  }
-  body.dark #popup {
-    background: #2b2b40;
-    color: #ffe4e1;
-    box-shadow: 0 0 20px #ff5f8d;
-  }
-  #popup.show {
-    display: block;
-    animation: handwriting 0.5s ease forwards;
-  }
-  @keyframes handwriting {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  }
-  #popup button {
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-    cursor: pointer;
-    border: none;
-    background: #ff80ab;
-    color: white;
-    padding: 0.5rem 1.2rem;
-    border-radius: 0.6rem;
-    font-family: 'Poppins', sans-serif;
-    transition: background 0.3s ease;
-    user-select: none;
-  }
-  #popup button:hover {
-    background: #ff5f8d;
-  }
-
-  /* Typewriter effect */
-  #letterText {
-    white-space: pre-wrap;
-    font-size: 1.3rem;
-    min-height: 9rem;
-  }
-
-  /* Handwritten signature */
-  #signature {
-    margin-top: 2rem;
-    font-family: 'Great Vibes', cursive;
-    font-size: 2rem;
-    color: #ff4081;
-    opacity: 0;
-    user-select: none;
-  }
-  body.dark #signature {
-    color: #ff80ab;
-  }
-  @keyframes fadeInSignature {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  /* Toggle theme button */
-  .toggle-theme {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    background: #ff4081;
-    color: white;
-    border: none;
-    padding: 0.6rem 1rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    user-select: none;
-    z-index: 1101;
-    transition: background 0.3s ease;
-  }
-  .toggle-theme:hover {
-    background: #ff69a7;
-  }
-
-  /* Floating Effects Canvas */
-  #floatingEffectsCanvas {
-    pointer-events: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 100;
-  }
-
-  /* Background Music Controls */
-  #musicControl {
-    position: fixed;
-    bottom: 4.5rem;
-    right: 1rem;
-    background: #ff4081;
-    color: white;
-    border: none;
-    padding: 0.6rem 1rem;
-    border-radius: 1rem;
-    cursor: pointer;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    user-select: none;
-    z-index: 1101;
-    transition: background 0.3s ease;
-  }
-  #musicControl:hover {
-    background: #ff69a7;
-  }
-
-  /* Voice Slide */
-  #voiceSlide button {
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
-    border: none;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    font-size: 2rem;
-    color: white;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.3s ease;
-  }
-  #voiceSlide button:hover {
-    background: linear-gradient(to right, #ff6f5b, #ff638c);
-  }
-  #voiceSlide p {
-    margin-top: 1rem;
-    font-size: 1rem;
-  }
-
-  /* Footer */
-  footer {
-    margin-top: 3rem;
-    font-size: 0.9rem;
-    color: #888;
-    user-select: none;
-  }
-  body.dark footer {
-    color: #aaa;
-  }
-
-  /* Responsive */
-  @media (max-width: 480px) {
-    h1 {
-      font-size: 2.4rem;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Birthday Maya 🎉</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gloria+Hallelujah&family=Poppins:wght@300;500&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset and Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
     }
-    .section {
-      font-size: 1.1rem;
-      padding: 1rem;
-      min-height: 50vh;
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0 1rem 4rem;
+      min-height: 100vh;
+      background: linear-gradient(120deg, #ffe4e1, #fff0f5);
+      color: #6b2c2c;
+      overflow-x: hidden;
+      transition: background 0.5s ease, color 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    body.dark {
+      background: linear-gradient(120deg, #12121f, #242440);
+      color: #ffe4e1;
+    }
+
+    /* Fonts & Headings */
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      text-align: center;
+      color: #ff4081;
+      margin: 1.2rem 0 0.4rem;
+      user-select: none;
+      text-shadow: 0 0 8px #ff80ab88;
+    }
+    body.dark h1 {
+      color: #ff80ab;
+      text-shadow: 0 0 12px #ffb6c188;
+    }
+    .quote {
+      font-family: 'Gloria Hallelujah', cursive;
+      font-style: italic;
+      max-width: 600px;
+      margin: 0 auto 2.4rem;
+      text-align: center;
+      font-size: 1.5rem;
+      color: #cc3366;
+      text-shadow: 0 0 6px #cc336655;
+    }
+    body.dark .quote {
+      color: #ffb6c1;
+      text-shadow: 0 0 8px #ffb6c177;
+    }
+
+    /* Secret Gateway */
+    #gateway {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      animation: fadeIn 1.2s ease forwards;
+    }
+    #gateway h2 {
+      font-size: 2.8rem;
+      margin-bottom: 0.2rem;
+      user-select: none;
+    }
+    #gateway p, #gateway small {
+      font-size: 1.25rem;
+      margin-bottom: 0.4rem;
+      user-select: none;
     }
     #gateway input {
-      width: 100px;
-      font-size: 1.6rem;
+      font-size: 2.2rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 1rem;
+      border: 2px solid #ff4081;
+      margin-top: 1rem;
+      width: 150px;
+      text-align: center;
+      outline-offset: 4px;
+      transition: border-color 0.3s ease;
+      user-select: text;
+      font-weight: 600;
     }
-  }
-</style>
+    #gateway input:focus {
+      border-color: #ff80ab;
+      box-shadow: 0 0 12px #ff80abcc;
+    }
+    #gateway button {
+      margin-top: 1.4rem;
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      color: white;
+      padding: 1rem 2.8rem;
+      border: none;
+      border-radius: 2rem;
+      font-size: 1.5rem;
+      cursor: pointer;
+      user-select: none;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      box-shadow: 0 6px 15px #ff416caa;
+      transition: box-shadow 0.3s ease, background 0.4s ease;
+    }
+    #gateway button:hover,
+    #gateway button:focus-visible {
+      box-shadow: 0 8px 24px #ff4b2bdd;
+      background: linear-gradient(45deg, #ff6386, #ff7562);
+      outline: none;
+    }
+
+    /* Slider */
+    #slider {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      max-width: 700px;
+      width: 100%;
+      padding-bottom: 5rem;
+      animation: fadeIn 1s ease forwards;
+      user-select: none;
+    }
+    #slider.active {
+      display: flex;
+    }
+
+    /* Slide Sections */
+    .section {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 62vh;
+      font-family: 'Gloria Hallelujah', cursive;
+      font-size: 1.5rem;
+      padding: 2rem 3rem;
+      text-align: center;
+      color: #6b2c2c;
+      border-radius: 1.2rem;
+      background: #fff0f5cc;
+      box-shadow: 0 0 30px #ff80ab33;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      max-width: 600px;
+      user-select: text;
+    }
+    body.dark .section {
+      color: #ffe4e1;
+      background: #2a2a4033;
+      box-shadow: 0 0 20px #ff80ab66;
+    }
+    .section.active {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Navigation Buttons */
+    .next-btn {
+      position: fixed;
+      bottom: 1.4rem;
+      background: #ffb6c1;
+      color: #333;
+      padding: 0.9rem 1.6rem;
+      border: none;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      user-select: none;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 12px #ff80ab88;
+      z-index: 110;
+      letter-spacing: 0.8px;
+      font-size: 1.3rem;
+      filter: drop-shadow(0 1px 1px #ff80abaa);
+    }
+    .next-btn.left {
+      left: 1rem;
+    }
+    .next-btn.right {
+      right: 1rem;
+    }
+    .next-btn:disabled {
+      background: #ffccd8aa;
+      cursor: default;
+      box-shadow: none;
+      filter: none;
+    }
+    .next-btn:hover:not(:disabled),
+    .next-btn:focus-visible:not(:disabled) {
+      background: #ff80ab;
+      box-shadow: 0 8px 20px #ff80abcc;
+      outline: none;
+    }
+
+    /* Reveal Love Letter Button */
+    .reveal-btn {
+      margin-top: 2.6rem;
+      background: #ff80ab;
+      color: white;
+      border: none;
+      padding: 1.15rem 2.8rem;
+      border-radius: 2rem;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      user-select: none;
+      box-shadow: 0 6px 15px #ff4b2bcc;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      letter-spacing: 1.2px;
+      font-size: 1.4rem;
+      filter: drop-shadow(0 2px 3px #ff5f8dbb);
+      text-shadow: 0 0 2px #fff4f4cc;
+    }
+    .reveal-btn:hover,
+    .reveal-btn:focus-visible {
+      background: #ff6386;
+      box-shadow: 0 10px 24px #ff5f8ddd;
+      outline: none;
+    }
+
+    /* Popup */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      background: white;
+      padding: 2.8rem 3rem 3rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 0 30px #ff80abcc;
+      font-family: 'Gloria Hallelujah', cursive;
+      color: #333;
+      text-align: center;
+      z-index: 1200;
+      transform: translate(-50%, -50%);
+      user-select: text;
+    }
+    body.dark #popup {
+      background: #2b2b40dd;
+      color: #ffe4e1;
+      box-shadow: 0 0 30px #ff5f8ddd;
+    }
+    #popup.show {
+      display: block;
+      animation: handwriting 0.5s ease forwards;
+    }
+    @keyframes handwriting {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+    #popup button {
+      margin-top: 1.8rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      background: #ff80ab;
+      color: white;
+      padding: 0.6rem 1.8rem;
+      border-radius: 1rem;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      user-select: none;
+      box-shadow: 0 5px 15px #ff5f8ddd;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    #popup button:hover,
+    #popup button:focus-visible {
+      background: #ff6386;
+      box-shadow: 0 7px 20px #ff5f8ddd;
+      outline: none;
+    }
+
+    /* Typewriter Effect */
+    #letterText {
+      white-space: pre-wrap;
+      font-size: 1.4rem;
+      min-height: 12rem;
+      letter-spacing: 0.03em;
+      line-height: 1.5em;
+      user-select: text;
+    }
+
+    /* Handwritten SVG Signature Container */
+    #signature {
+      margin-top: 3rem;
+      width: 280px;
+      height: 80px;
+      margin-left: auto;
+      margin-right: auto;
+      user-select: none;
+    }
+
+    /* Animated Handwritten Signature SVG */
+    .signature-path {
+      fill: none;
+      stroke: #ff4081;
+      stroke-width: 2;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      stroke-dasharray: 500;
+      stroke-dashoffset: 500;
+      animation: drawSignature 3s ease forwards;
+      filter: drop-shadow(0 0 5px #ff80abcc);
+    }
+    body.dark .signature-path {
+      stroke: #ff80ab;
+      filter: drop-shadow(0 0 7px #ffb6c177);
+    }
+    @keyframes drawSignature {
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Toggle Theme Button */
+    .toggle-theme {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #ff4081;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      user-select: none;
+      box-shadow: 0 6px 15px #ff80abcc;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      z-index: 1300;
+      font-size: 1.2rem;
+    }
+    .toggle-theme:hover,
+    .toggle-theme:focus-visible {
+      background: #ff69a7;
+      box-shadow: 0 8px 24px #ff80abcc;
+      outline: none;
+    }
+
+    /* Background Music Control */
+    #musicControl {
+      position: fixed;
+      bottom: 5.4rem;
+      right: 1rem;
+      background: #ff4081;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 1.3rem;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      user-select: none;
+      box-shadow: 0 6px 15px #ff80abcc;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      z-index: 1300;
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      filter: drop-shadow(0 2px 3px #ff5f8dbb);
+    }
+    #musicControl:hover,
+    #musicControl:focus-visible {
+      background: #ff69a7;
+      box-shadow: 0 8px 24px #ff80abcc;
+      outline: none;
+    }
+
+    /* Voice Slide Button */
+    #voiceSlide button {
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      border: none;
+      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      font-size: 2.5rem;
+      color: white;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 5px 15px #ff4b2bbb;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      filter: drop-shadow(0 1px 4px #ff638bcc);
+    }
+    #voiceSlide button:hover,
+    #voiceSlide button:focus-visible {
+      background: linear-gradient(45deg, #ff6386, #ff7562);
+      box-shadow: 0 8px 22px #ff638bcc;
+      outline: none;
+    }
+    #voiceSlide p {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+      user-select: none;
+      letter-spacing: 0.03em;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: 3rem;
+      font-size: 1rem;
+      color: #888;
+      user-select: none;
+      text-align: center;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+    body.dark footer {
+      color: #bbb;
+    }
+
+    /* Floating Effects Canvas */
+    #floatingEffectsCanvas {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 90;
+      filter: drop-shadow(0 0 8px #ff80abcc);
+      user-select: none;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
 </head>
 <body>
-<button class="toggle-theme" aria-label="Toggle light/dark mode">🌓</button>
+  <button class="toggle-theme" aria-label="Toggle light/dark mode" title="Toggle light/dark mode">🌓</button>
 
-<!-- Background Music -->
-<audio id="bg-music" autoplay loop preload="auto" src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_f2119a6a1c.mp3"></audio>
-<button id="musicControl" aria-label="Pause background music">Pause 🎵</button>
+  <!-- Background Music -->
+  <audio id="bg-music" autoplay loop preload="auto" src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_f2119a6a1c.mp3"></audio>
+  <button id="musicControl" aria-label="Pause background music" title="Pause background music">Pause 🎵</button>
 
-<!-- Secret Gateway Lock Screen -->
-<div id="gateway" role="dialog" aria-modal="true" aria-labelledby="gatewayTitle">
-  <h2 id="gatewayTitle">🔒 Secret Gateway</h2>
-  <p>Enter the code to unlock my heart 💕</p>
-  <small>💡 Hint: Three numbers that mean "I Love You"</small>
-  <input type="password" id="passcode" maxlength="3" aria-label="Enter passcode" autocomplete="off" />
-  <button id="unlockBtn">Unlock My Heart 💖</button>
-</div>
-
-<!-- Main Slider -->
-<div id="slider" aria-live="polite" aria-atomic="true" aria-relevant="additions removals">
-  <h1>Happy Birthday Maya 🎉</h1>
-  <p class="quote">"You make the world brighter just by being in it."</p>
-
-  <section class="section active" tabindex="0">
-    🎂 On this special day, the universe pauses to celebrate you. Your existence adds meaning to mine.
-  </section>
-  <section class="section" tabindex="0">
-    🌌 You're not just beautiful on the outside, but breathtaking within. Today, we celebrate all that you are. 💖
-  </section>
-  <section class="section" tabindex="0">
-    🌠 My world began spinning in color the day you walked into it. You are my life. 🥺
-  </section>
-  <section class="section" tabindex="0">
-    🎶 Your laughter is the rhythm I live for. I'd write your name on every heartbeat. ❤️
-  </section>
-  <section class="section" tabindex="0">
-    🦋 You are grace wrapped in stardust. I fall for you every single day. 🌷
+  <!-- Secret Gateway -->
+  <section id="gateway" role="region" aria-label="Secret gateway to birthday message">
+    <h2>🔒 Secret Gateway</h2>
+    <p>Enter the code to unlock my heart💕</p>
+    <small>💡 Hint: Three numbers that mean 'I Love You'</small>
+    <input type="password" id="passcode" maxlength="3" autocomplete="off" aria-label="Enter secret code" />
+    <button id="unlockBtn" aria-label="Unlock birthday message">Unlock My Heart 💖</button>
   </section>
 
-  <!-- Voice Slide -->
-  <section class="section" tabindex="0" id="voiceSlide">
-    <h2>🎤 My Voice, My Heart 🎶</h2>
-    <p>I recorded something special, just for you 💕</p>
-    <button id="playVoiceBtn" aria-pressed="false" aria-label="Play voice message">▶️</button>
-    <p>🔊 Tap to hear my voice</p>
-    <p>Thank you for being the most incredible person in my life. I love you beyond time, beyond everything 💕</p>
-  </section>
+  <!-- Main Content Slider -->
+  <main id="slider" role="main" aria-live="polite" aria-atomic="true" tabindex="-1" aria-label="Birthday message slides">
+    <h1>Happy Birthday Maya 🎉</h1>
+    <p class="quote">"You make the world brighter just by being in it."</p>
 
-  <!-- Love Letter Slide -->
-  <section class="section" tabindex="0">
-    <p>With all my heart and soul, forever yours,<br /><strong>— sparsh 💌</strong></p>
-    <button class="reveal-btn" id="revealLetterBtn">💌 Reveal Love Letter 💌</button>
-  </section>
-</div>
+    <article class="section active" role="group" aria-roledescription="slide" aria-label="Slide 1">
+      🎂 On this special day, the universe pauses to celebrate you. Your existence adds meaning to mine.
+    </article>
+    <article class="section" role="group" aria-roledescription="slide" aria-label="Slide 2">
+      🌌 You're not just beautiful on the outside, but breathtaking within. Today, we celebrate all that you are. 💖
+    </article>
+    <article class="section" role="group" aria-roledescription="slide" aria-label="Slide 3">
+      🌠 My world began spinning in color the day you walked into it. You are my life. 🥺
+    </article>
+    <article class="section" role="group" aria-roledescription="slide" aria-label="Slide 4">
+      🎶 Your laughter is the rhythm I live for. I'd write your name on every heartbeat. ❤️
+    </article>
+    <article class="section" role="group" aria-roledescription="slide" aria-label="Slide 5">
+      🦋 You are grace wrapped in stardust. I fall for you every single day. 🌷
+    </article>
 
-<!-- Love Letter Popup -->
-<div id="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupContent">
-  <div id="letterText"></div>
-  <div id="signature" aria-label="Handwritten signature"></div>
-  <button id="closePopupBtn" aria-label="Close love letter popup">Close</button>
-</div>
+    <!-- Voice Slide -->
+    <article id="voiceSlide" class="section" role="group" aria-roledescription="slide" aria-label="Voice message slide">
+      <h3>🎤 My Voice, My Heart 🎶</h3>
+      <p>I recorded something special, just for you💕</p>
+      <button id="playVoiceBtn" aria-label="Play voice message" title="Play voice message">▶️</button>
+      <p>🔊 Tap to hear my voice</p>
+      <p>Thank you for being the most incredible person in my life. I love you beyond time, beyond everything 💕</p>
+    </article>
 
-<!-- Floating Effects Canvas -->
-<canvas id="floatingEffectsCanvas" aria-hidden="true"></canvas>
+    <!-- Love Letter Slide -->
+    <article class="section" role="group" aria-roledescription="slide" aria-label="Love letter slide">
+      <p>With all my heart and soul, forever yours,<br><strong>sparsh</strong> 💌</p>
+      <button class="reveal-btn" id="revealLetterBtn" aria-label="Reveal love letter" title="Reveal love letter">💌 Reveal Love Letter 💌</button>
+    </article>
+  </main>
 
-<!-- Navigation Buttons -->
-<button class="next-btn left" id="prevBtn" aria-label="Previous slide" disabled>⬅️ Prev</button>
-<button class="next-btn right" id="nextBtn" aria-label="Next slide">Next ➡️</button>
+  <!-- Love Letter Popup -->
+  <aside id="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="letterText" tabindex="-1">
+    <h2 id="popupTitle" style="margin-bottom:1rem; user-select:none;">💖 A Letter for Maya 💖</h2>
+    <div id="letterText" aria-live="polite" aria-atomic="true"></div>
+    <div id="signature" aria-hidden="true" title="Handwritten signature">
+      <svg viewBox="0 0 280 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" role="img" >
+        <path class="signature-path" d="M10 65
+          c10 -20 20 -20 40 -20
+          s30 10 40 15
+          c12 7 15 10 25 10
+          s18 -7 25 -10
+          c10 -5 35 -18 50 -20
+          s25 10 25 15" />
+      </svg>
+    </div>
+    <button id="closePopupBtn" aria-label="Close love letter">Close</button>
+  </aside>
 
-<footer>© 2025 Made with ❤️ by Sparsh</footer>
+  <!-- Floating Effects Canvas -->
+  <canvas id="floatingEffectsCanvas" aria-hidden="true"></canvas>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<script>
-  // Elements & variables
-  const gateway = document.getElementById('gateway');
-  const slider = document.getElementById('slider');
-  const passcodeInput = document.getElementById('passcode');
-  const unlockBtn = document.getElementById('unlockBtn');
-  const sections = slider.querySelectorAll('.section');
-  const nextBtn = document.getElementById('nextBtn');
-  const prevBtn = document.getElementById('prevBtn');
-  const toggleThemeBtn = document.querySelector('.toggle-theme');
-  const bgMusic = document.getElementById('bg-music');
-  const musicControlBtn = document.getElementById('musicControl');
-  const playVoiceBtn = document.getElementById('playVoiceBtn');
-  const voiceMsg = new Audio('your-voice.mp3'); // Replace with actual voice message file URL
-  const popup = document.getElementById('popup');
-  const letterText = document.getElementById('letterText');
-  const signature = document.getElementById('signature');
-  const closePopupBtn = document.getElementById('closePopupBtn');
-  const revealLetterBtn = document.getElementById('revealLetterBtn');
-  const floatingCanvas = document.getElementById('floatingEffectsCanvas');
-  const ctx = floatingCanvas.getContext('2d');
+  <!-- Audio for voice message -->
+  <audio id="voiceMsg" preload="auto" src="your-voice.mp3"></audio>
 
-  // Slide control
-  let currentSlide = 0;
+  <!-- Navigation Buttons -->
+  <button class="next-btn left" id="prevBtn" aria-label="Previous slide" title="Previous slide" disabled>⬅️ Prev</button>
+  <button class="next-btn right" id="nextBtn" aria-label="Next slide" title="Next slide">Next ➡️</button>
 
-  function showSlide(index) {
-    if (index < 0 || index >= sections.length) return;
-    sections.forEach((sec, i) => {
-      sec.classList.toggle('active', i === index);
-      if(i === index) sec.focus();
-    });
-    currentSlide = index;
-    updateNavButtons();
-  }
-  function updateNavButtons() {
-    prevBtn.disabled = currentSlide === 0;
-    nextBtn.disabled = currentSlide === sections.length -1;
-  }
-  nextBtn.addEventListener('click', () => {
-    if(currentSlide < sections.length -1) showSlide(currentSlide + 1);
-  });
-  prevBtn.addEventListener('click', () => {
-    if(currentSlide > 0) showSlide(currentSlide -1);
-  });
+  <!-- Footer -->
+  <footer>© 2025 Made with ❤️ by Sparsh</footer>
 
-  // Secret Gateway check
-  unlockBtn.addEventListener('click', () => {
-    if(passcodeInput.value.trim() === '143') {
-      gateway.style.display = 'none';
-      slider.classList.add('active');
-      showSlide(0);
-      passcodeInput.value = '';
-    } else {
-      alert('Oops! Try again 🌸');
-      passcodeInput.value = '';
-      passcodeInput.focus();
-    }
-  });
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    (() => {
+      const body = document.body;
 
-  passcodeInput.addEventListener('keypress', e => {
-    if(e.key === 'Enter') unlockBtn.click();
-  });
+      // Elements
+      const gateway = document.getElementById('gateway');
+      const slider = document.getElementById('slider');
+      const sections = slider.querySelectorAll('.section');
+      const passcodeInput = document.getElementById('passcode');
+      const unlockBtn = document.getElementById('unlockBtn');
+      const toggleThemeBtn = document.querySelector('.toggle-theme');
+      const musicControlBtn = document.getElementById('musicControl');
+      const bgMusic = document.getElementById('bg-music');
+      const voiceMsg = document.getElementById('voiceMsg');
+      const playVoiceBtn = document.getElementById('playVoiceBtn');
+      const revealLetterBtn = document.getElementById('revealLetterBtn');
+      const popup = document.getElementById('popup');
+      const letterText = document.getElementById('letterText');
+      const signature = document.getElementById('signature');
+      const closePopupBtn = document.getElementById('closePopupBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
 
-  // Theme toggle with persistence
-  function applyTheme(theme) {
-    if(theme === 'dark') document.body.classList.add('dark');
-    else document.body.classList.remove('dark');
-  }
-  toggleThemeBtn.addEventListener('click', () => {
-    if(document.body.classList.contains('dark')) {
-      applyTheme('light');
-      localStorage.setItem('theme', 'light');
-    } else {
-      applyTheme('dark');
-      localStorage.setItem('theme', 'dark');
-    }
-  });
-  // Load theme from storage
-  const savedTheme = localStorage.getItem('theme') || 'light';
-  applyTheme(savedTheme);
+      // Slide index and control
+      let currentSlide = 0;
 
-  // Background music control
-  let bgMusicPlaying = true;
-  musicControlBtn.addEventListener('click', () => {
-    if(bgMusicPlaying) {
-      bgMusic.pause();
-      musicControlBtn.textContent = 'Play 🎵';
-      bgMusicPlaying = false;
-    } else {
-      bgMusic.play();
-      musicControlBtn.textContent = 'Pause 🎵';
-      bgMusicPlaying = true;
-    }
-  });
+      function updateSlideButtons() {
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === sections.length - 1;
+      }
 
-  // Voice message play/pause
-  let voicePlaying = false;
-  playVoiceBtn.addEventListener('click', () => {
-    if(!voicePlaying) {
-      bgMusic.pause();
-      voiceMsg.play();
-      playVoiceBtn.textContent = '⏸️';
-      voicePlaying = true;
-    } else {
-      voiceMsg.pause();
-      playVoiceBtn.textContent = '▶️';
-      voicePlaying = false;
-      bgMusic.play();
-    }
-  });
-  voiceMsg.addEventListener('ended', () => {
-    voicePlaying = false;
-    playVoiceBtn.textContent = '▶️';
-    if(bgMusicPlaying) bgMusic.play();
-  });
+      function showSlide(index) {
+        if(index < 0 || index >= sections.length) return;
+        sections.forEach((section, i) => {
+          section.classList.toggle('active', i === index);
+        });
+        currentSlide = index;
+        updateSlideButtons();
+        slider.focus();
+      }
 
-  // Floating hearts, sparkles, snowflakes - particles system
-  const particles = [];
-  const emojis = ['❤️', '💖', '✨', '❄️'];
-  const maxParticles = 80;
+      // Secret Gateway
+      unlockBtn.addEventListener('click', () => {
+        const code = passcodeInput.value.trim();
+        if(code === '143') {
+          gateway.style.display = 'none';
+          slider.classList.add('active');
+          showSlide(0);
+          bgMusic.play().catch(() => {});
+          passcodeInput.value = '';
+        } else {
+          alert("Oops! Try again 🌸");
+          passcodeInput.value = '';
+          passcodeInput.focus();
+        }
+      });
 
-  function random(min,max) { return Math.random()*(max-min)+min; }
-  class Particle {
-    constructor(x,y,emoji) {
-      this.x = x;
-      this.y = y;
-      this.emoji = emoji;
-      this.size = random(20,35);
-      this.speedY = random(0.4,1.2);
-      this.speedX = random(-0.3,0.3);
-      this.opacity = 1;
-      this.life = random(100,200);
-    }
-    update() {
-      this.y -= this.speedY;
-      this.x += this.speedX;
-      this.life--;
-      this.opacity = this.life/200;
-      if(this.life <= 0) this.respawn();
-    }
-    draw(ctx) {
-      ctx.globalAlpha = this.opacity;
-      ctx.font = `${this.size}px serif`;
-      ctx.fillText(this.emoji, this.x, this.y);
-      ctx.globalAlpha = 1;
-    }
-    respawn() {
-      this.x = random(0, floatingCanvas.width);
-      this.y = floatingCanvas.height + random(10, 100);
-      this.size = random(20,35);
-      this.speedY = random(0.4,1.2);
-      this.speedX = random(-0.3,0.3);
-      this.opacity = 1;
-      this.life = random(100,200);
-      this.emoji = emojis[Math.floor(random(0, emojis.length))];
-    }
-  }
+      passcodeInput.addEventListener('keydown', e => {
+        if(e.key === 'Enter') unlockBtn.click();
+      });
 
-  function initParticles() {
-    particles.length = 0;
-    for(let i=0; i<maxParticles; i++) {
-      particles.push(new Particle(random(0,floatingCanvas.width), random(0,floatingCanvas.height), emojis[Math.floor(random(0, emojis.length))]));
-    }
-  }
-  function resizeCanvas() {
-    floatingCanvas.width = window.innerWidth;
-    floatingCanvas.height = window.innerHeight;
-    initParticles();
-  }
-  window.addEventListener('resize', resizeCanvas);
+      // Theme toggle with localStorage persistence
+      function applyTheme(theme) {
+        if(theme === 'dark') {
+          body.classList.add('dark');
+          toggleThemeBtn.textContent = '🌞';
+          toggleThemeBtn.title = "Switch to light mode";
+          localStorage.setItem('theme', 'dark');
+        } else {
+          body.classList.remove('dark');
+          toggleThemeBtn.textContent = '🌓';
+          toggleThemeBtn.title = "Switch to dark mode";
+          localStorage.setItem('theme', 'light');
+        }
+      }
 
-  function animateParticles() {
-    ctx.clearRect(0,0,floatingCanvas.width,floatingCanvas.height);
-    particles.forEach(p => {
-      p.update();
-      p.draw(ctx);
-    });
-    requestAnimationFrame(animateParticles);
-  }
+      toggleThemeBtn.addEventListener('click', () => {
+        applyTheme(body.classList.contains('dark') ? 'light' : 'dark');
+      });
 
-  // Initialize canvas & particles
-  resizeCanvas();
-  animateParticles();
+      // On load apply saved theme
+      applyTheme(localStorage.getItem('theme') || 'light');
 
-  // Love Letter Popup typing effect + handwritten signature fade in
-  const letterContent = `Dear Maya,
+      // Background music control
+      let bgMusicPlaying = true;
+      musicControlBtn.addEventListener('click', () => {
+        if(bgMusicPlaying) {
+          bgMusic.pause();
+          musicControlBtn.textContent = 'Play 🎵';
+          musicControlBtn.title = 'Play background music';
+          bgMusicPlaying = false;
+        } else {
+          bgMusic.play();
+          musicControlBtn.textContent = 'Pause 🎵';
+          musicControlBtn.title = 'Pause background music';
+          bgMusicPlaying = true;
+        }
+      });
+
+      // Voice message play/pause
+      let voicePlaying = false;
+      playVoiceBtn.addEventListener('click', () => {
+        if(!voicePlaying) {
+          bgMusic.pause();
+          voiceMsg.play();
+          playVoiceBtn.textContent = '⏸️';
+          playVoiceBtn.title = 'Pause voice message';
+          voicePlaying = true;
+        } else {
+          voiceMsg.pause();
+          playVoiceBtn.textContent = '▶️';
+          playVoiceBtn.title = 'Play voice message';
+          voicePlaying = false;
+          if(bgMusicPlaying) bgMusic.play();
+        }
+      });
+      voiceMsg.addEventListener('ended', () => {
+        voicePlaying = false;
+        playVoiceBtn.textContent = '▶️';
+        playVoiceBtn.title = 'Play voice message';
+        if(bgMusicPlaying) bgMusic.play();
+      });
+
+      // Next/Prev slide navigation
+      nextBtn.addEventListener('click', () => {
+        if(currentSlide < sections.length -1) {
+          showSlide(currentSlide + 1);
+        }
+      });
+      prevBtn.addEventListener('click', () => {
+        if(currentSlide > 0) {
+          showSlide(currentSlide - 1);
+        }
+      });
+
+      // Keyboard shortcuts for accessibility
+      document.addEventListener('keydown', e => {
+        if(slider.classList.contains('active')) {
+          if(e.key === 'ArrowRight') nextBtn.click();
+          else if(e.key === 'ArrowLeft') prevBtn.click();
+          else if(e.key === 'Escape' && popup.classList.contains('show')) closePopupBtn.click();
+        }
+      });
+
+      // Floating Hearts, Sparkles & Snowflakes on canvas
+      const floatingCanvas = document.getElementById('floatingEffectsCanvas');
+      const ctx = floatingCanvas.getContext('2d');
+      let particles = [];
+      const emojis = ['❤️', '💖', '✨', '❄️'];
+      const maxParticles = 100;
+
+      function random(min,max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      class Particle {
+        constructor(x,y,emoji){
+          this.x = x;
+          this.y = y;
+          this.emoji = emoji;
+          this.size = random(22, 36);
+          this.speedY = random(0.4, 1.4);
+          this.speedX = random(-0.4, 0.4);
+          this.opacity = 1;
+          this.life = random(120, 220);
+          this.rotation = random(0, Math.PI*2);
+          this.rotationSpeed = random(0.005, 0.015);
+        }
+        update(){
+          this.y -= this.speedY;
+          this.x += this.speedX;
+          this.rotation += this.rotationSpeed;
+          this.life--;
+          this.opacity = this.life/220;
+          if(this.life <= 0 || this.y < -50 || this.x < -50 || this.x > floatingCanvas.width + 50) {
+            this.respawn();
+          }
+        }
+        draw(ctx){
+          ctx.save();
+          ctx.globalAlpha = this.opacity;
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+          ctx.font = `${this.size}px serif`;
+          ctx.fillText(this.emoji, 0, 0);
+          ctx.restore();
+          ctx.globalAlpha = 1;
+        }
+        respawn(){
+          this.x = random(0, floatingCanvas.width);
+          this.y = floatingCanvas.height + random(10, 100);
+          this.size = random(22, 36);
+          this.speedY = random(0.4, 1.4);
+          this.speedX = random(-0.4, 0.4);
+          this.opacity = 1;
+          this.life = random(120, 220);
+          this.emoji = emojis[Math.floor(random(0, emojis.length))];
+          this.rotation = random(0, Math.PI*2);
+          this.rotationSpeed = random(0.005, 0.015);
+        }
+      }
+
+      function initParticles(){
+        particles = [];
+        for(let i=0; i<maxParticles; i++){
+          particles.push(new Particle(random(0, floatingCanvas.width), random(0, floatingCanvas.height), emojis[Math.floor(random(0, emojis.length))]));
+        }
+      }
+
+      function resizeCanvas(){
+        floatingCanvas.width = window.innerWidth;
+        floatingCanvas.height = window.innerHeight;
+        initParticles();
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+
+      function animate(){
+        ctx.clearRect(0,0,floatingCanvas.width,floatingCanvas.height);
+        particles.forEach(p => {
+          p.update();
+          p.draw(ctx);
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // Love Letter Popup typing + handwritten signature animation
+      const letterContent = `Dear Maya,
 
 Your love is the light in my world. Every second with you is magic. I promise to love you beyond limits. 💖
 
 Love,
 Sparsh 💌`;
 
-  let typingIndex = 0;
-  let typingInterval;
+      let typingIndex = 0;
+      let typingInterval;
 
-  function startTyping() {
-    letterText.textContent = '';
-    signature.style.opacity = 0;
-    typingIndex = 0;
-    clearInterval(typingInterval);
-    typingInterval = setInterval(() => {
-      letterText.textContent += letterContent.charAt(typingIndex);
-      typingIndex++;
-      if(typingIndex >= letterContent.length) {
+      function startTyping(){
+        letterText.textContent = '';
+        signature.querySelector('svg path').style.animation = 'none'; // reset
+        void signature.querySelector('svg path').offsetWidth; // trigger reflow
+        typingIndex = 0;
         clearInterval(typingInterval);
-        fadeInSignature();
+        typingInterval = setInterval(() => {
+          letterText.textContent += letterContent.charAt(typingIndex);
+          typingIndex++;
+          if(typingIndex >= letterContent.length){
+            clearInterval(typingInterval);
+            // Start signature animation
+            signature.querySelector('svg path').style.animation = 'drawSignature 3s ease forwards';
+          }
+        }, 60);
       }
-    }, 60);
-  }
-  function fadeInSignature() {
-    signature.style.animation = 'fadeInSignature 1.5s forwards';
-    signature.textContent = '— sparsh 💌';
-  }
 
-  revealLetterBtn.addEventListener('click', () => {
-    popup.classList.add('show');
-    startTyping();
-    fireConfetti();
-  });
-  closePopupBtn.addEventListener('click', () => {
-    popup.classList.remove('show');
-    letterText.textContent = '';
-    signature.textContent = '';
-  });
+      revealLetterBtn.addEventListener('click', () => {
+        popup.classList.add('show');
+        popup.focus();
+        startTyping();
+        // Confetti burst
+        confetti({
+          particleCount: 250,
+          spread: 120,
+          origin: { y: 0.6 },
+          colors: ['#ff416c', '#ff4b2b', '#ff80ab', '#ffb6c1']
+        });
+      });
 
-  // Confetti fireworks on love letter reveal
-  function fireConfetti() {
-    confetti({
-      particleCount: 200,
-      spread: 90,
-      origin: { y: 0.6 }
-    });
-  }
+      closePopupBtn.addEventListener('click', () => {
+        popup.classList.remove('show');
+        letterText.textContent = '';
+        signature.querySelector('svg path').style.animation = 'none';
+        revealLetterBtn.focus();
+      });
 
-  // Initialize slider state
-  showSlide(0);
-</script>
+      // Initialize slider state
+      showSlide(0);
+    })();
+  </script>
 </body>
 </html>

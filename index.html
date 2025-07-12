@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Happy Birthday Maya 🎉</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gloria+Hallelujah&family=Poppins:wght@300;500&display=swap" rel="stylesheet"/>
+<style>
+  /* Reset & base */
+  * {
+    box-sizing: border-box;
+    margin: 0; padding: 0;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #ffe4e1, #fff0f5);
+    color: #6b2c2c;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    transition: background 0.3s ease, color 0.3s ease;
+    position: relative;
+  }
+  body.dark {
+    background: linear-gradient(120deg, #1e1e2f, #2a2a40);
+    color: #ffe4e1;
+  }
+
+  /* Fonts & headings */
+  h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    text-align: center;
+    color: #ff4081;
+    margin: 1rem 0 0.5rem;
+    user-select: none;
+  }
+  body.dark h1 {
+    color: #ff80ab;
+  }
+  .quote {
+    font-family: 'Gloria Hallelujah', cursive;
+    font-style: italic;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    text-align: center;
+    color: #cc3366;
+  }
+  body.dark .quote {
+    color: #ffb6c1;
+  }
+
+  /* Secret Gateway */
+  #gateway {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    display: flex;
+    text-align: center;
+  }
+  #gateway h2, #gateway p, #gateway small {
+    margin-bottom: 0.5rem;
+  }
+  #gateway input {
+    font-size: 2rem;
+    padding: 0.6rem 1rem;
+    border-radius: 0.8rem;
+    border: 2px solid #ff4081;
+    width: 140px;
+    text-align: center;
+    outline-offset: 2px;
+    transition: border-color 0.3s ease;
+  }
+  #gateway input:focus {
+    border-color: #ff80ab;
+  }
+  #gateway button {
+    margin-top: 1rem;
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    color: white;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 1rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease;
+  }
+  #gateway button:hover {
+    background: linear-gradient(to right, #ff6f5b, #ff638c);
+  }
+
+  /* Slider container */
+  #slider {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    max-width: 700px;
+    width: 100%;
+    padding-bottom: 4rem;
+  }
+  #slider.active {
+    display: flex;
+  }
+
+  /* Slide sections */
+  .section {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    font-family: 'Gloria Hallelujah', cursive;
+    font-size: 1.4rem;
+    padding: 1rem 2rem;
+    text-align: center;
+    color: #6b2c2c;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  body.dark .section {
+    color: #ffe4e1;
+  }
+  .section.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Navigation buttons */
+  .next-btn {
+    position: fixed;
+    bottom: 1rem;
+    background: #ffb6c1;
+    color: #333;
+    padding: 0.8rem 1.4rem;
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    user-select: none;
+    transition: background 0.3s ease;
+    z-index: 101;
+  }
+  .next-btn:disabled {
+    background: #ffdce0;
+    cursor: default;
+  }
+  .next-btn.left {
+    left: 1rem;
+  }
+  .next-btn.right {
+    right: 1rem;
+  }
+  .next-btn:hover:not(:disabled) {
+    background: #ff8fa0;
+  }
+
+  /* Reveal Love Letter Button */
+  .reveal-btn {
+    margin-top: 2rem;
+    background: #ff80ab;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    user-select: none;
+    transition: background 0.3s ease;
+  }
+  .reveal-btn:hover {
+    background: #ff5f8d;
+  }
+
+  /* Popup Love Letter */
+  #popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: white;
+    padding: 2rem 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px #ff80ab;
+    font-family: 'Gloria Hallelujah', cursive;
+    color: #333;
+    text-align: center;
+    z-index: 1100;
+    transform: translate(-50%, -50%);
+  }
+  body.dark #popup {
+    background: #2b2b40;
+    color: #ffe4e1;
+    box-shadow: 0 0 20px #ff5f8d;
+  }
+  #popup.show {
+    display: block;
+    animation: handwriting 0.5s ease forwards;
+  }
+  @keyframes handwriting {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  #popup button {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    background: #ff80ab;
+    color: white;
+    padding: 0.5rem 1.2rem;
+    border-radius: 0.6rem;
+    font-family: 'Poppins', sans-serif;
+    transition: background 0.3s ease;
+    user-select: none;
+  }
+  #popup button:hover {
+    background: #ff5f8d;
+  }
+
+  /* Typewriter effect */
+  #letterText {
+    white-space: pre-wrap;
+    font-size: 1.3rem;
+    min-height: 9rem;
+  }
+
+  /* Handwritten signature */
+  #signature {
+    margin-top: 2rem;
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: #ff4081;
+    opacity: 0;
+    user-select: none;
+  }
+  body.dark #signature {
+    color: #ff80ab;
+  }
+  @keyframes fadeInSignature {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Toggle theme button */
+  .toggle-theme {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: #ff4081;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    user-select: none;
+    z-index: 1101;
+    transition: background 0.3s ease;
+  }
+  .toggle-theme:hover {
+    background: #ff69a7;
+  }
+
+  /* Floating Effects Canvas */
+  #floatingEffectsCanvas {
+    pointer-events: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+  }
+
+  /* Background Music Controls */
+  #musicControl {
+    position: fixed;
+    bottom: 4.5rem;
+    right: 1rem;
+    background: #ff4081;
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    user-select: none;
+    z-index: 1101;
+    transition: background 0.3s ease;
+  }
+  #musicControl:hover {
+    background: #ff69a7;
+  }
+
+  /* Voice Slide */
+  #voiceSlide button {
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    border: none;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease;
+  }
+  #voiceSlide button:hover {
+    background: linear-gradient(to right, #ff6f5b, #ff638c);
+  }
+  #voiceSlide p {
+    margin-top: 1rem;
+    font-size: 1rem;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: #888;
+    user-select: none;
+  }
+  body.dark footer {
+    color: #aaa;
+  }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 2.4rem;
+    }
+    .section {
+      font-size: 1.1rem;
+      padding: 1rem;
+      min-height: 50vh;
+    }
+    #gateway input {
+      width: 100px;
+      font-size: 1.6rem;
+    }
+  }
+</style>
+</head>
+<body>
+<button class="toggle-theme" aria-label="Toggle light/dark mode">🌓</button>
+
+<!-- Background Music -->
+<audio id="bg-music" autoplay loop preload="auto" src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_f2119a6a1c.mp3"></audio>
+<button id="musicControl" aria-label="Pause background music">Pause 🎵</button>
+
+<!-- Secret Gateway Lock Screen -->
+<div id="gateway" role="dialog" aria-modal="true" aria-labelledby="gatewayTitle">
+  <h2 id="gatewayTitle">🔒 Secret Gateway</h2>
+  <p>Enter the code to unlock my heart 💕</p>
+  <small>💡 Hint: Three numbers that mean "I Love You"</small>
+  <input type="password" id="passcode" maxlength="3" aria-label="Enter passcode" autocomplete="off" />
+  <button id="unlockBtn">Unlock My Heart 💖</button>
+</div>
+
+<!-- Main Slider -->
+<div id="slider" aria-live="polite" aria-atomic="true" aria-relevant="additions removals">
+  <h1>Happy Birthday Maya 🎉</h1>
+  <p class="quote">"You make the world brighter just by being in it."</p>
+
+  <section class="section active" tabindex="0">
+    🎂 On this special day, the universe pauses to celebrate you. Your existence adds meaning to mine.
+  </section>
+  <section class="section" tabindex="0">
+    🌌 You're not just beautiful on the outside, but breathtaking within. Today, we celebrate all that you are. 💖
+  </section>
+  <section class="section" tabindex="0">
+    🌠 My world began spinning in color the day you walked into it. You are my life. 🥺
+  </section>
+  <section class="section" tabindex="0">
+    🎶 Your laughter is the rhythm I live for. I'd write your name on every heartbeat. ❤️
+  </section>
+  <section class="section" tabindex="0">
+    🦋 You are grace wrapped in stardust. I fall for you every single day. 🌷
+  </section>
+
+  <!-- Voice Slide -->
+  <section class="section" tabindex="0" id="voiceSlide">
+    <h2>🎤 My Voice, My Heart 🎶</h2>
+    <p>I recorded something special, just for you 💕</p>
+    <button id="playVoiceBtn" aria-pressed="false" aria-label="Play voice message">▶️</button>
+    <p>🔊 Tap to hear my voice</p>
+    <p>Thank you for being the most incredible person in my life. I love you beyond time, beyond everything 💕</p>
+  </section>
+
+  <!-- Love Letter Slide -->
+  <section class="section" tabindex="0">
+    <p>With all my heart and soul, forever yours,<br /><strong>— sparsh 💌</strong></p>
+    <button class="reveal-btn" id="revealLetterBtn">💌 Reveal Love Letter 💌</button>
+  </section>
+</div>
+
+<!-- Love Letter Popup -->
+<div id="popup" role="dialog" aria-modal="true" aria-labelledby="popupTitle" aria-describedby="popupContent">
+  <div id="letterText"></div>
+  <div id="signature" aria-label="Handwritten signature"></div>
+  <button id="closePopupBtn" aria-label="Close love letter popup">Close</button>
+</div>
+
+<!-- Floating Effects Canvas -->
+<canvas id="floatingEffectsCanvas" aria-hidden="true"></canvas>
+
+<!-- Navigation Buttons -->
+<button class="next-btn left" id="prevBtn" aria-label="Previous slide" disabled>⬅️ Prev</button>
+<button class="next-btn right" id="nextBtn" aria-label="Next slide">Next ➡️</button>
+
+<footer>© 2025 Made with ❤️ by Sparsh</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+  // Elements & variables
+  const gateway = document.getElementById('gateway');
+  const slider = document.getElementById('slider');
+  const passcodeInput = document.getElementById('passcode');
+  const unlockBtn = document.getElementById('unlockBtn');
+  const sections = slider.querySelectorAll('.section');
+  const nextBtn = document.getElementById('nextBtn');
+  const prevBtn = document.getElementById('prevBtn');
+  const toggleThemeBtn = document.querySelector('.toggle-theme');
+  const bgMusic = document.getElementById('bg-music');
+  const musicControlBtn = document.getElementById('musicControl');
+  const playVoiceBtn = document.getElementById('playVoiceBtn');
+  const voiceMsg = new Audio('your-voice.mp3'); // Replace with actual voice message file URL
+  const popup = document.getElementById('popup');
+  const letterText = document.getElementById('letterText');
+  const signature = document.getElementById('signature');
+  const closePopupBtn = document.getElementById('closePopupBtn');
+  const revealLetterBtn = document.getElementById('revealLetterBtn');
+  const floatingCanvas = document.getElementById('floatingEffectsCanvas');
+  const ctx = floatingCanvas.getContext('2d');
+
+  // Slide control
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    if (index < 0 || index >= sections.length) return;
+    sections.forEach((sec, i) => {
+      sec.classList.toggle('active', i === index);
+      if(i === index) sec.focus();
+    });
+    currentSlide = index;
+    updateNavButtons();
+  }
+  function updateNavButtons() {
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide === sections.length -1;
+  }
+  nextBtn.addEventListener('click', () => {
+    if(currentSlide < sections.length -1) showSlide(currentSlide + 1);
+  });
+  prevBtn.addEventListener('click', () => {
+    if(currentSlide > 0) showSlide(currentSlide -1);
+  });
+
+  // Secret Gateway check
+  unlockBtn.addEventListener('click', () => {
+    if(passcodeInput.value.trim() === '143') {
+      gateway.style.display = 'none';
+      slider.classList.add('active');
+      showSlide(0);
+      passcodeInput.value = '';
+    } else {
+      alert('Oops! Try again 🌸');
+      passcodeInput.value = '';
+      passcodeInput.focus();
+    }
+  });
+
+  passcodeInput.addEventListener('keypress', e => {
+    if(e.key === 'Enter') unlockBtn.click();
+  });
+
+  // Theme toggle with persistence
+  function applyTheme(theme) {
+    if(theme === 'dark') document.body.classList.add('dark');
+    else document.body.classList.remove('dark');
+  }
+  toggleThemeBtn.addEventListener('click', () => {
+    if(document.body.classList.contains('dark')) {
+      applyTheme('light');
+      localStorage.setItem('theme', 'light');
+    } else {
+      applyTheme('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  });
+  // Load theme from storage
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  applyTheme(savedTheme);
+
+  // Background music control
+  let bgMusicPlaying = true;
+  musicControlBtn.addEventListener('click', () => {
+    if(bgMusicPlaying) {
+      bgMusic.pause();
+      musicControlBtn.textContent = 'Play 🎵';
+      bgMusicPlaying = false;
+    } else {
+      bgMusic.play();
+      musicControlBtn.textContent = 'Pause 🎵';
+      bgMusicPlaying = true;
+    }
+  });
+
+  // Voice message play/pause
+  let voicePlaying = false;
+  playVoiceBtn.addEventListener('click', () => {
+    if(!voicePlaying) {
+      bgMusic.pause();
+      voiceMsg.play();
+      playVoiceBtn.textContent = '⏸️';
+      voicePlaying = true;
+    } else {
+      voiceMsg.pause();
+      playVoiceBtn.textContent = '▶️';
+      voicePlaying = false;
+      bgMusic.play();
+    }
+  });
+  voiceMsg.addEventListener('ended', () => {
+    voicePlaying = false;
+    playVoiceBtn.textContent = '▶️';
+    if(bgMusicPlaying) bgMusic.play();
+  });
+
+  // Floating hearts, sparkles, snowflakes - particles system
+  const particles = [];
+  const emojis = ['❤️', '💖', '✨', '❄️'];
+  const maxParticles = 80;
+
+  function random(min,max) { return Math.random()*(max-min)+min; }
+  class Particle {
+    constructor(x,y,emoji) {
+      this.x = x;
+      this.y = y;
+      this.emoji = emoji;
+      this.size = random(20,35);
+      this.speedY = random(0.4,1.2);
+      this.speedX = random(-0.3,0.3);
+      this.opacity = 1;
+      this.life = random(100,200);
+    }
+    update() {
+      this.y -= this.speedY;
+      this.x += this.speedX;
+      this.life--;
+      this.opacity = this.life/200;
+      if(this.life <= 0) this.respawn();
+    }
+    draw(ctx) {
+      ctx.globalAlpha = this.opacity;
+      ctx.font = `${this.size}px serif`;
+      ctx.fillText(this.emoji, this.x, this.y);
+      ctx.globalAlpha = 1;
+    }
+    respawn() {
+      this.x = random(0, floatingCanvas.width);
+      this.y = floatingCanvas.height + random(10, 100);
+      this.size = random(20,35);
+      this.speedY = random(0.4,1.2);
+      this.speedX = random(-0.3,0.3);
+      this.opacity = 1;
+      this.life = random(100,200);
+      this.emoji = emojis[Math.floor(random(0, emojis.length))];
+    }
+  }
+
+  function initParticles() {
+    particles.length = 0;
+    for(let i=0; i<maxParticles; i++) {
+      particles.push(new Particle(random(0,floatingCanvas.width), random(0,floatingCanvas.height), emojis[Math.floor(random(0, emojis.length))]));
+    }
+  }
+  function resizeCanvas() {
+    floatingCanvas.width = window.innerWidth;
+    floatingCanvas.height = window.innerHeight;
+    initParticles();
+  }
+  window.addEventListener('resize', resizeCanvas);
+
+  function animateParticles() {
+    ctx.clearRect(0,0,floatingCanvas.width,floatingCanvas.height);
+    particles.forEach(p => {
+      p.update();
+      p.draw(ctx);
+    });
+    requestAnimationFrame(animateParticles);
+  }
+
+  // Initialize canvas & particles
+  resizeCanvas();
+  animateParticles();
+
+  // Love Letter Popup typing effect + handwritten signature fade in
+  const letterContent = `Dear Maya,
+
+Your love is the light in my world. Every second with you is magic. I promise to love you beyond limits. 💖
+
+Love,
+Sparsh 💌`;
+
+  let typingIndex = 0;
+  let typingInterval;
+
+  function startTyping() {
+    letterText.textContent = '';
+    signature.style.opacity = 0;
+    typingIndex = 0;
+    clearInterval(typingInterval);
+    typingInterval = setInterval(() => {
+      letterText.textContent += letterContent.charAt(typingIndex);
+      typingIndex++;
+      if(typingIndex >= letterContent.length) {
+        clearInterval(typingInterval);
+        fadeInSignature();
+      }
+    }, 60);
+  }
+  function fadeInSignature() {
+    signature.style.animation = 'fadeInSignature 1.5s forwards';
+    signature.textContent = '— sparsh 💌';
+  }
+
+  revealLetterBtn.addEventListener('click', () => {
+    popup.classList.add('show');
+    startTyping();
+    fireConfetti();
+  });
+  closePopupBtn.addEventListener('click', () => {
+    popup.classList.remove('show');
+    letterText.textContent = '';
+    signature.textContent = '';
+  });
+
+  // Confetti fireworks on love letter reveal
+  function fireConfetti() {
+    confetti({
+      particleCount: 200,
+      spread: 90,
+      origin: { y: 0.6 }
+    });
+  }
+
+  // Initialize slider state
+  showSlide(0);
+</script>
+</body>
+</html>

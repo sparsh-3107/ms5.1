@@ -109,7 +109,7 @@
     display: flex;
     animation: fadeIn 1s ease;
   }
-  .reveal-btn {
+  .reveal-btn, .voice-btn {
     margin-top: 3rem;
     background: #ff80ab;
     color: white;
@@ -120,8 +120,9 @@
     animation: pulse 1.5s infinite;
     box-shadow: 0 0 10px #ff80ab;
     transition: box-shadow 0.3s ease;
+    user-select: none;
   }
-  .reveal-btn:hover {
+  .reveal-btn:hover, .voice-btn:hover {
     box-shadow: 0 0 20px #ff4b80;
   }
   .popup {
@@ -277,6 +278,14 @@
   <div class="section" tabindex="0">🌠 My world began spinning in color the day you walked into it. You are my life. 🥺</div>
   <div class="section" tabindex="0">🎶 Your laughter is the rhythm I live for. I'd write your name on every heartbeat. ❤️</div>
   <div class="section" tabindex="0">🦋 You are grace wrapped in stardust. I fall for you every single day. 🌷</div>
+
+  <!-- Voice message slide -->
+  <div class="section" tabindex="0" style="flex-direction: column;">
+    <p>🎤 Listen to my voice message, just for you:</p>
+    <button class="voice-btn" id="voiceBtn" aria-label="Play Voice Message">▶️ Play Voice Message</button>
+    <audio id="voiceMsg" src="https://cdn.pixabay.com/download/audio/2022/03/14/audio_aa6ecb9f82.mp3" preload="auto"></audio>
+  </div>
+
   <div class="section" tabindex="0">
     With all my heart and soul, forever yours,<br /><strong>sparsh</strong> 💌
     <div style="margin-top: 2rem;">
@@ -300,9 +309,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script>
-  // Variables & elements
+  // Elements & state
   const sections = document.querySelectorAll('.section');
   let current = 0;
+  const bgMusic = document.getElementById('bgMusic');
+  const voiceMsg = document.getElementById('voiceMsg');
+  const voiceBtn = document.getElementById('voiceBtn');
 
   // Lock screen code check
   function checkCode() {
@@ -319,7 +331,7 @@
     }
   }
 
-  // Slide navigation functions
+  // Slide navigation
   function showSlide(index) {
     sections.forEach((s, i) => s.classList.toggle('active', i === index));
     current = index;
@@ -336,7 +348,7 @@
     }
   }
 
-  // Popup & love letter typewriter effect + speech synthesis
+  // Popup & love letter typewriter + speech synthesis
   function showPopup() {
     const popup = document.getElementById('popup');
     const target = document.getElementById('typedText');
@@ -357,36 +369,36 @@ I promise to love you beyond limits. 💖`;
         i++;
         setTimeout(type, 50);
       } else {
-        signature.style.display = 'inline-block';
-        speakText(text);
-        target.focus();
+        setTimeout(() => {
+          signature.style.display = 'inline-block';
+          speakText(text);
+        }, 300);
       }
     }
     setTimeout(type, 200);
   }
 
   function hidePopup() {
-    stopSpeech();
-    document.getElementById('popup').classList.remove('show');
+    const popup = document.getElementById('popup');
+    popup.classList.remove('show');
   }
 
-  // Theme toggle
+  // Light/Dark theme toggle
   function toggleTheme() {
     document.body.classList.toggle('dark');
   }
 
-  // Firework confetti
+  // Confetti fireworks on popup
   function firework() {
-    const confettiSettings = {
+    confetti({
       particleCount: 150,
       spread: 90,
       origin: { y: 0.6 },
-      colors: ['#ff4b2b', '#ff416c', '#ff80ab', '#ffb6c1']
-    };
-    confetti(confettiSettings);
+      colors: ['#ff80ab', '#ff4b80', '#ff1c66', '#ffb6c1', '#ffc0cb']
+    });
   }
 
-  // Floating emoji effects: hearts, sparkles, snowflakes (from original code)
+  // Floating emoji effects
   function spawnEffect(type, char) {
     const el = document.createElement('div');
     el.className = type;
@@ -400,32 +412,49 @@ I promise to love you beyond limits. 💖`;
   setInterval(() => spawnEffect('sparkle', '✨'), 1800);
   setInterval(() => spawnEffect('snowflake', '❄️'), 2200);
 
-  // Background music control
-  const bgMusic = document.getElementById('bgMusic');
-  function playBgMusic() {
-    bgMusic.play().catch(() => {
-      // Autoplay might be blocked, ignore errors
-    });
-  }
-
-  // Speech synthesis setup
-  let synth = window.speechSynthesis;
-  let utterance;
+  // Speech synthesis for love letter reading
   function speakText(text) {
-    if (!synth) return;
-    stopSpeech();
-    utterance = new SpeechSynthesisUtterance(text);
+    if (!('speechSynthesis' in window)) return;
+    const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 1;
     utterance.pitch = 1;
-    synth.speak(utterance);
-  }
-  function stopSpeech() {
-    if (synth && synth.speaking) {
-      synth.cancel();
-    }
+    window.speechSynthesis.speak(utterance);
   }
 
-  // Animated Balloons on Canvas
+  // Auto play background music if locked/unlocked
+  function playBgMusic() {
+    bgMusic.volume = 0.3;
+    bgMusic.play().catch(() => {});
+  }
+
+  // Voice message play/pause logic
+  voiceBtn.addEventListener('click', () => {
+    if (voiceMsg.paused) {
+      voiceMsg.play();
+      voiceBtn.textContent = '⏸️ Pause Voice Message';
+      pauseBgMusic();
+    } else {
+      voiceMsg.pause();
+      voiceBtn.textContent = '▶️ Play Voice Message';
+      playBgMusic();
+    }
+  });
+
+  voiceMsg.addEventListener('ended', () => {
+    voiceBtn.textContent = '▶️ Play Voice Message';
+    playBgMusic();
+  });
+
+  voiceMsg.addEventListener('pause', () => {
+    voiceBtn.textContent = '▶️ Play Voice Message';
+    playBgMusic();
+  });
+
+  function pauseBgMusic() {
+    if (!bgMusic.paused) bgMusic.pause();
+  }
+
+  // Balloons animation on canvas
   const canvas = document.getElementById('balloonsCanvas');
   const ctx = canvas.getContext('2d');
   let balloons = [];
@@ -436,18 +465,16 @@ I promise to love you beyond limits. 💖`;
     }
     reset() {
       this.x = Math.random() * window.innerWidth;
-      this.y = window.innerHeight + 50 + Math.random() * 200;
-      this.size = 20 + Math.random() * 30;
-      this.speed = 0.5 + Math.random() * 1.2;
-      this.color = `hsl(${Math.floor(Math.random() * 360)}, 80%, 70%)`;
-      this.sway = Math.random() * 2 + 1;
-      this.swayDirection = Math.random() > 0.5 ? 1 : -1;
-      this.swayAngle = 0;
+      this.y = window.innerHeight + Math.random() * 200;
+      this.size = 15 + Math.random() * 10;
+      this.speed = 0.7 + Math.random() * 0.5;
+      this.color = `hsl(${Math.floor(Math.random() * 360)}, 70%, 70%)`;
+      this.swayAngle = Math.random() * Math.PI * 2;
     }
     update() {
       this.y -= this.speed;
       this.swayAngle += 0.02;
-      this.x += this.swayDirection * Math.sin(this.swayAngle) * 0.5;
+      this.x += Math.sin(this.swayAngle) * 0.5;
       if (this.y < -this.size) this.reset();
     }
     draw() {
@@ -499,10 +526,11 @@ I promise to love you beyond limits. 💖`;
 
   window.addEventListener('resize', resizeCanvas);
 
-  // Initialize
+  // Initialize balloons
   resizeCanvas();
+  animateBalloons();
 
-  // Accessibility: keyboard navigation for slides
+  // Accessibility: keyboard navigation for slides & popup close
   document.addEventListener('keydown', e => {
     if (!document.getElementById('slider').classList.contains('active')) return;
     if (e.key === 'ArrowRight') nextSlide();
